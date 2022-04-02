@@ -5,7 +5,7 @@ const {Recipe, Diet} = require('../../db');
 
 //Info de la api.
 const getAllAPI = async () => {
-        const dataApi = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true&apiKey=${API_KEY_3}&number=10`);
+        const dataApi = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true&apiKey=${API_KEY_2}&number=10`);
         const filterApi = await dataApi.data.results.map(api => {
             return {
                 id: api.id,
@@ -102,7 +102,8 @@ const getAllTypesDiets = async () => {
             dietComplete.push(dietFilter[i][0]);
         };
     };
-    dietComplete.push('ketogenic', 'vegetarian');
+    dietComplete.push('ketogenic');
+    dietComplete.push('vegetarian');
     const set = new Set(dietComplete);
     dietComplete = [...set];
     dietComplete = dietComplete.filter(e=>e !== null && e !== undefined);
