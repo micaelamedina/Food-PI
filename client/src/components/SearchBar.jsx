@@ -1,22 +1,26 @@
 import React from "react";
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { getRecipeByName } from "../redux/actions";
 
 export default function SearchBar() {
-    const [input, setInput] = useState( {
-        search: '',
-    });
+    const dispatch = useDispatch();
+    const [input, setInput] = useState('');
+
     const handleChange = (event) => {
         event.preventDefault();
-        setInput((prev) => ({...prev, [event.target.name]: event.target.value}));
+        setInput(event.target.value);
     };
     const handleSubmit = (event) => {
-        setInput({search: ''})
+        event.preventDefault();
+        dispatch(getRecipeByName(input));
+        setInput('');
     };
     return(
         <>
             <div>
                 <label>Search Recipe</label>
-                <input type="text" placeholder="Recipe Name" name={"search"} value={input.search} onChange={e=>handleChange(e)}/>
+                <input type="text" placeholder="Recipe Name" onChange={e=>handleChange(e)}/>
                 <button onClick={e=>handleSubmit(e)}>Search</button>
             </div>
         </>

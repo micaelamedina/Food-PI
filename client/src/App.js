@@ -16,7 +16,7 @@ function App() {
           <Route exact path={'/'} element={<LandingPage/>}/>
           <Route exact path={'/about'} element={<AboutMe/>}/>
           <Route exact path={'/home'} element={<Home />}/>
-          <Route exact path={'/recipe/:idRecipe'} element={<RecipeDetail />}/>
+          <Route exact path={'/recipe/:idRecipe'} element={<RecipeDetail/>}/>
           <Route exact path={'/recipes/create'} element={<RecipeCreate />}/>
           <Route path={'/*'} element={<ErrorPage/>}/>
         </Routes>

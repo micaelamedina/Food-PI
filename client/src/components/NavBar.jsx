@@ -6,9 +6,8 @@ export default function NavBar() {
     return(
         <>
             <div>
-                <NavLink to={'/'}><button>Go to inicio</button></NavLink>
+                <NavLink to={'/'}><button>Go to Inicio</button></NavLink>
             </div>
-            
             <div>
                 <SearchBar/>
             </div>

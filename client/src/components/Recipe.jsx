@@ -1,26 +1,39 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 
-//en este componente va a estar el detalle de una receta (para la pantalla principal, solo con algunos datos.)
+const detectDiet = function(diets) {
+    if(diets){
+        if(typeof diets[0] === 'string') {
+            return diets;
+        } else {
+            let dietFilter = diets.map((d)=>d.name);
+            return dietFilter;
+        };
+    };
+};
 
-// export class Recipe extends React.Component() {
-//     render() {
-//         const {id, name, image, diet} = this.props;
-//         return (
-//             <>
-//             <NavLink to={`/recipes/${id}`}><h3>Name: {name}</h3></NavLink>
-//             <h5>Diet: {diet}</h5>
-//             <img src={image} alt="Img Recipe" />
-//             </>
-//         );
-//     };
-// };
-
+const dietsToUpperCase = (dietsArray) => {
+    let newArrayDiets = dietsArray.map(d=> {
+        return d[0].toUpperCase() + d.slice(1);
+    })
+    return newArrayDiets;
+}
 export function Recipe({id, name, diets, image}){
+    var dietFilter = detectDiet(diets);
+    dietFilter = dietsToUpperCase(dietFilter);
     return(
         <>
-            <NavLink to={`/recipes/${id}`}><h3>Name: {name}</h3></NavLink>
-            <h5>Diets: {diets.map(e=>`${e} `)}</h5>
+            <NavLink to={`/recipe/${id}`}><h3>Name: {name}</h3></NavLink>
+            <h5>Diets:</h5>
+            <ul>
+            {
+                dietFilter?dietFilter.map(e=>{
+                    return(
+                        <li>{e}</li>
+                    )
+                }):'This recipe does not belong to a specific diet.'
+            }
+            </ul>
             <img src={image} alt="Img Recipe" />
         </>
     )

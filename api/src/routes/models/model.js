@@ -5,7 +5,7 @@ const {Recipe, Diet} = require('../../db');
 
 //Info de la api.
 const getAllAPI = async () => {
-        const dataApi = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true&apiKey=${API_KEY_2}&number=10`);
+        const dataApi = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true&apiKey=${API_KEY_2}&number=50`);
         const filterApi = await dataApi.data.results.map(api => {
             return {
                 id: api.id,
@@ -16,8 +16,8 @@ const getAllAPI = async () => {
                 healthScore: api.healthScore, //nivel saludable
                 steps: api.analyzedInstructions.map(e=>e), //analyzed es un array con una sola posicion, dentro tiene un objeto, donde una de sus propiedades es step, un array de pasos.
                 diets: api.diets.map(e=>e), //tipos de dietas.
-                cuisines: api.cuisines.map(e=>e), //tipo de comida ej: tailandesa.
-                dishTypes: api.dishTypes, //tipo de plato: ej guarnicion
+                // cuisines: api.cuisines.map(e=>e), //tipo de comida ej: tailandesa.
+                // dishTypes: api.dishTypes, //tipo de plato: ej guarnicion
             };
         });
         return filterApi;  
@@ -89,47 +89,92 @@ const getRecipeById = async (id) => {
 //Tipos de dietas:
 //En los primeros 100 request de esta API no hay recetas que incluyan la dieta ketogenic y/o vegetarian, por eso son pusheadas manualmente a dietComplete. En caso de modificarse la API y que en los primeros 100 request se incluya alguna de estas dietas, no habrá duplicados ya que el set no los permite.
 //Tambien se podría tener pre-cargadas todos los tipos de dieta que hay en la documentación de la API al iniciar dietComplete, recorrer la info obtenida de la API para tener en cuenta si hay incoporaciones de nuevos tipos de dieta, y que se unifiquen al momento de crear el set.
+// const getAllTypesDiets = async () => {
+//     const dataAPI = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true&apiKey=${API_KEY_6}&number=50`);
+//     let dietFilter = await dataAPI.data.results.map(ob => ob.diets);
+//     let dietComplete = ['lacto vegetarian', 'ovo vegetarian', 'vegetarian', 'ketogenic'];
+//     for (let i = 0; i < dietFilter.length; i++) {
+//         if(dietFilter[i].length >= 2) {
+//             for (let j = 0; j <= dietFilter[i].length; j++) {
+//                 dietComplete.push(dietFilter[i][j])
+//             };
+//         } else if(dietFilter[i].length === 1) {
+//             dietComplete.push(dietFilter[i][0]);
+//         };
+//     };
+//     const set = new Set(dietComplete);
+//     dietComplete = [...set];
+//     dietComplete = dietComplete.filter(e=>e !== null && e !== undefined && e !== '');
+//     return dietComplete;
+// };
+
 const getAllTypesDiets = async () => {
-    const dataAPI = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true&apiKey=${API_KEY_6}&number=50`);
-    const dietFilter = await dataAPI.data.results.map(ob => ob.diets.map(e=>e));
-    let dietComplete = [];
-    for (let i = 0; i < dietFilter.length; i++) {
-        if(dietFilter[i].length > 1) {
-            for (let j = 0; j < dietFilter[i].length; j++) {
-                dietComplete.push(dietFilter[i][j])
-            };
-        } else {
-            dietComplete.push(dietFilter[i][0]);
+    const allRecipes = await getAll();
+    let dietFilter = allRecipes.map(r=>r.diets);
+    let dietComplete = ['lacto vegetarian', 'ovo vegetarian', 'vegetarian', 'ketogenic'];
+    dietFilter.forEach(d => {
+        if(d.length >= 2) {
+            d.forEach(e=> dietComplete.push(e));
+        } else if(d.length === 1) {
+            dietComplete.push(d[0]);
         };
-    };
-    dietComplete.push('ketogenic');
-    dietComplete.push('vegetarian');
-    const set = new Set(dietComplete);
+    });
+    let set = new Set(dietComplete);
     dietComplete = [...set];
-    dietComplete = dietComplete.filter(e=>e !== null && e !== undefined);
+    dietComplete = dietComplete.filter(e=>e !== null && e !== undefined && e !== '');
     return dietComplete;
 };
 
 const getTypeDiet = async () => {
-    const typeDiets = await getAllTypesDiets();
+    let typeDiets = await getAllTypesDiets();
     typeDiets.forEach(diet => {
         Diet.findOrCreate({
             where: { name: diet },
           })
     });
-    const allDiets = await Diet.findAll();
-    return allDiets;
-}
+    let allDiets = await Diet.findAll();
+    if(allDiets) {
+        return allDiets;
+    } else {
+        return {msg: 'No hay dietas'}
+    };
+};
+
+//filtro por tipo de dieta
+const filterRecipesByDiets = async (diet) => { 
+    try {
+        const allRecipes = await getAll();
+        const allTypeDiets = await getTypeDiet();
+        const dietFilter = allTypeDiets.find(d=>d.name === diet);
+    if(diet) {
+        if(dietFilter) {
+            const recipesFilterByDiet = allRecipes.filter(r=> r.diets.find(d=>d === dietFilter.name));
+            if(recipesFilterByDiet.length) {
+                return recipesFilterByDiet;
+            } else {
+                return {msg: 'There are no recipes for the type of diet entered'};
+            };
+        } else {
+            return {msg: 'The name of the diet is not valid'}
+        };
+    } else {
+        return {msg: 'Diet name is required'}
+    };
+    } catch (error) {
+        console.log(error)
+    };
+};
+
 
 //Creación de nueva receta.
-const createRecipe = async (name, summary, image, score, healthScore, steps, diets) => {
+const createRecipe = async (name, summary, score, healthScore, steps, image, diets) => {
     const newRecipe = await Recipe.create({
         name,
         summary,
-        image,
         score,
         healthScore,
         steps,
+        image
     });
     const dietDb = await Diet.findAll({
         where: {name: diets}
@@ -137,10 +182,60 @@ const createRecipe = async (name, summary, image, score, healthScore, steps, die
     newRecipe.addDiet(dietDb);
 };
 
+//orden por nombre 
+const orderSortName = async (orden) => {
+    try {
+        if(orden) {
+            const allRecipes = await getAll();
+            if(orden.toLowerCase() === 'asc') {
+                const recipesOrderAsc = allRecipes.sort((a,b) => {
+                    if (a.name > b.name) {
+                        return 1;
+                    };
+                    if (a.name < b.name) {
+                        return -1;
+                    };
+                    return 0;
+                });
+                return recipesOrderAsc;
+            } else if(orden.toLowerCase() === 'desc') {
+                const recipesOrderDesc = allRecipes.sort((a,b) => {
+                    if (a.name > b.name) {
+                        return -1;
+                    };
+                    if (a.name < b.name) {
+                        return 1;
+                    };
+                    return 0;
+                });
+                return recipesOrderDesc;
+            };
+        } else {
+            return {msg: 'Order is required'}
+        };
+    } catch (error) {
+        console.log(error)
+    };    
+};
+
+const ordenamiento = async (ordenamiento) => {
+    try {
+        const recetaOrdenada = await Recipe.findAll({
+            order: [["name", ordenamiento]]
+        });
+        return recetaOrdenada;
+    } catch (error) {
+        console.log(error)
+    }
+   
+}
+
 module.exports = {
     getAll,
     getRecipeByName,
     getRecipeById,
     getTypeDiet,
     createRecipe,
+    filterRecipesByDiets,
+    orderSortName
 };

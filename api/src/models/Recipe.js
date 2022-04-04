@@ -27,7 +27,10 @@ module.exports = sequelize => {
       type: DataTypes.INTEGER
     },
     steps: {
-      type: DataTypes.TEXT
+      type: DataTypes.ARRAY(DataTypes.STRING)
+    },
+    image: {
+      type: DataTypes.STRING,
     },
     createdByDB: { //Con esta propiedad validamos de donde mostrar la receta, si desde la DB o desde la API.
       type: DataTypes.BOOLEAN,
