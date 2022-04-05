@@ -1,6 +1,6 @@
 const {Router} = require('express');
 const router = Router();
-const {createRecipe, orderSortName } = require('./models/model');
+const {createRecipe, orderSortName, getAllDb, getAllAPI } = require('./models/model');
 
 router.post('/', async (req, res) => {
     try {
@@ -8,7 +8,7 @@ router.post('/', async (req, res) => {
         if(!name || !summary || !image || !score || !healthScore || !steps || !diets) {
             res.status(404).send({msg: 'Missing Data'});
         } else {
-            await createRecipe(name, summary, score, healthScore, steps, image, diets);
+            await createRecipe({name, summary, score, healthScore, steps, image, diets});
             res.status(200).send('Recipe created');
         };
     } catch (error) {
@@ -26,9 +26,35 @@ router.get('/order/:orderType', async (req, res) => {
             return res.send('Order type is required')
         }
     } catch (error) {
-        console.log(error)
+        console.log(error);
     };
 });
-    
+
+router.get('/filter/:nameUbication', async (req, res) => {
+    try {
+        const {nameUbication} = req.params;
+        if(nameUbication) {
+            if(nameUbication === 'db') {
+                const dataDb = await getAllDb();
+                if(dataDb) {
+                    res.status(200).json(dataDb)
+                } else {
+                    'No hay datos en la db.'
+                };
+            } else if (nameUbication === 'api') {
+                const dataApi = await getAllAPI();
+                if(dataApi) {
+                    res.status(200).json(dataApi)
+                } else {
+                    'No hay datos en la api.'
+                };
+            };
+        } else {
+            return 'Name ubication is required.'
+        };
+    } catch (error) {
+        console.log(error);
+    };
+});
  
 module.exports = router;

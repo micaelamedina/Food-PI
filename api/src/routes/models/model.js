@@ -5,7 +5,7 @@ const {Recipe, Diet} = require('../../db');
 
 //Info de la api.
 const getAllAPI = async () => {
-        const dataApi = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true&apiKey=${API_KEY_2}&number=50`);
+        const dataApi = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true&apiKey=${API_KEY_4}&number=50`);
         const filterApi = await dataApi.data.results.map(api => {
             return {
                 id: api.id,
@@ -71,6 +71,7 @@ const validateId = (id) => {
     };
 };
 
+//Obtener recetas por id.
 const getRecipeById = async (id) => {
     if(id) {
         id = validateId(id);
@@ -108,6 +109,7 @@ const getRecipeById = async (id) => {
 //     return dietComplete;
 // };
 
+//obtener todos los tipos de dietas posibles.
 const getAllTypesDiets = async () => {
     const allRecipes = await getAll();
     let dietFilter = allRecipes.map(r=>r.diets);
@@ -125,6 +127,7 @@ const getAllTypesDiets = async () => {
     return dietComplete;
 };
 
+//obtener y/o crear tipos de dietas.
 const getTypeDiet = async () => {
     let typeDiets = await getAllTypesDiets();
     typeDiets.forEach(diet => {
@@ -167,7 +170,7 @@ const filterRecipesByDiets = async (diet) => {
 
 
 //Creación de nueva receta.
-const createRecipe = async (name, summary, score, healthScore, steps, image, diets) => {
+const createRecipe = async ({name, summary, score, healthScore, steps, image, diets}) => {
     const newRecipe = await Recipe.create({
         name,
         summary,
@@ -182,7 +185,7 @@ const createRecipe = async (name, summary, score, healthScore, steps, image, die
     newRecipe.addDiet(dietDb);
 };
 
-//orden por nombre 
+//orden por nombre para todas las recetas.
 const orderSortName = async (orden) => {
     try {
         if(orden) {
@@ -218,6 +221,7 @@ const orderSortName = async (orden) => {
     };    
 };
 
+//ordenamiento a-z z-a para recetas creadas en bd.
 const ordenamiento = async (ordenamiento) => {
     try {
         const recetaOrdenada = await Recipe.findAll({
@@ -226,9 +230,8 @@ const ordenamiento = async (ordenamiento) => {
         return recetaOrdenada;
     } catch (error) {
         console.log(error)
-    }
-   
-}
+    }; 
+};
 
 module.exports = {
     getAll,

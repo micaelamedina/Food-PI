@@ -14,54 +14,58 @@ export const GET_DETAILS = 'GET_DETAILS';
 //             .then(rta => rta.json())
 //             .then(rta => {dispatch({type: GET_ALL_RECIPES, payload: rta})})
 //     };
-// };
+// };f
 
 //redux por si solo, no permite invocar funciones dento de las acciones, sino que permite unicamente objetos. 
 //thunk es un middleware que permite funciones dentro de las acciones. estas funciones se resuelven de manera asíncrona.
 
 export function getAllRecipes() {
     return async function(dispatch) {
-        let json = await axios.get('http://localhost:3001/recipes');
-        return dispatch({type: GET_ALL_RECIPES, payload: json.data});
+        const allRecipes = await axios.get('http://localhost:3001/recipes');
+        return dispatch({type: GET_ALL_RECIPES, payload: allRecipes.data});
     };
 };
 
-//createRecipe sin termina.
-export const createRecipe = async (input) => {
-    let json = await axios.post('http://localhost:3001/recipe', input)
-    return {type: CREATE_RECIPE, payload: json.data}
+export const createRecipe = (input) => {
+    return async function(dispatch) {
+        const postRecipe = await axios.post('http://localhost:3001/recipe', input)
+        console.log(postRecipe)
+        console.log(postRecipe.data)
+        return postRecipe;
+    };
 };
 
-export const getAllRecipesByDiet = (diet) => {
-        return ({type: GET_RECIPES_BY_DIET, payload: diet});
+export const getAllRecipesByDiet = async (diet) => {
+    const recipesFilterByDiet = await axios.get(`http://localhost:3001/diet/${diet}`);
+    return ({type: GET_RECIPES_BY_DIET, payload: recipesFilterByDiet.data});
 };
-
 
 export const getAllTypeDiets = () => {
     return async function(dispatch) {
-        let json = await axios.get('http://localhost:3001/types');
-        return (dispatch({type: GET_TYPE_DIETS, payload: json.data}))
+        const allTypeDiets = await axios.get('http://localhost:3001/types');
+        return (dispatch({type: GET_TYPE_DIETS, payload: allTypeDiets.data}))
     };
 };
 
-export const getRecipeById = (idRecipe) => {
-    return async function(dispatch) {
-        let json = await axios.get(`http://localhost:3001/recipes/${idRecipe}`);
-        return (dispatch({type: GET_RECIPE_BY_ID, payload: json.data}))
-    };
-};
+//repetida con getDetails
+// export const getRecipeById = (idRecipe) => {
+//     return async function(dispatch) {
+//         const recipeById = await axios.get(`http://localhost:3001/recipes/${idRecipe}`);
+//         return (dispatch({type: GET_RECIPE_BY_ID, payload: recipeById.data}))
+//     };
+// };
 
 export const getRecipeByName = (nameRecipe) => {
     return async function(dispatch) {
-        let json = await axios.get(`http://localhost:3001/recipes?name=${nameRecipe}`);
-        return (dispatch({type: GET_RECIPE_BY_NAME, payload: json.data}))
+        const recipeByName = await axios.get(`http://localhost:3001/recipes?name=${nameRecipe}`);
+        return (dispatch({type: GET_RECIPE_BY_NAME, payload: recipeByName.data}))
     };
 };
 
 export const getDetails = (idRecipe) => {
     return async function(dispatch) {
-        let json = await axios.get(`http://localhost:3001/recipes/${idRecipe}`);
-        return(dispatch({type: GET_DETAILS, payload: json.data}));
+        const recipeDetail = await axios.get(`http://localhost:3001/recipes/${idRecipe}`);
+        return(dispatch({type: GET_DETAILS, payload: recipeDetail.data}));
     };
 };
 
@@ -70,3 +74,11 @@ export const getDetails = (idRecipe) => {
 //         .then(r => r.json())
 //         .then(rta => {dispatch({type: GET_DETAILS, payload: rta})})
 //     };
+
+
+//IMPORTANTE:
+/*
+En el back esta creada la ruta para el ordenamiento de nombre de a-z z-a y el filtro por dieta.
+ver de crear una ruta para filtro de recetas creadas por la bd y recetas creadas por la api.
+las funciones ya estan creadas, son las que se concatenan.
+*/

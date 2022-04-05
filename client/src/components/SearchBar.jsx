@@ -12,6 +12,7 @@ export default function SearchBar() {
         setInput(event.target.value);
     };
     const handleSubmit = (event) => {
+        
         event.preventDefault();
         dispatch(getRecipeByName(input));
         setInput('');

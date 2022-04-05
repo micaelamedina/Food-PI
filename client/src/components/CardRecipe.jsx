@@ -20,22 +20,17 @@ const detectStep = function(steps) {
         return stepFilter;
     };
 };
-// const dietsToUpperCase = (dietas) => {
-//     let newArrayDiets = dietas.map(d=> {
-//         return d[0].toUpperCase() + d.slice(1);
-//     })
-//     return newArrayDiets;
-// }
+
 function dietsToUpperCase(dietas) {
     if(dietas === null || dietas === undefined || !dietas.length) {
         return [];
-    }
+    };
     let newArrayDiets = dietas.map(d=> {
         return d[0].toUpperCase() + d.slice(1);
-    })
+    });
     return newArrayDiets;
-    }
-//['vegan','vegetarian','ketogenic']
+};
+// diets db ->['vegan','vegetarian','ketogenic']
 
 //steps --> [{name: '', steps: [{step: 1},{step: 1}]}]
 export default function CardRecipe(props){
@@ -75,3 +70,6 @@ export default function CardRecipe(props){
         </>
     )
 }
+//para dejar una imagen por default:
+// props.image !== '' ? props.image : 'url'>
+// o props.image ? props.image : 'url'

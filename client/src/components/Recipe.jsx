@@ -38,3 +38,4 @@ export function Recipe({id, name, diets, image}){
         </>
     )
 }
+// image? image : 'url'

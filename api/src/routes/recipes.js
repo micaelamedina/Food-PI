@@ -21,7 +21,6 @@ router.get('/', async (req, res) => {
         res.status(404).send(`Error ${res.statusCode} ${error}`);
     };
 });
-
     
 router.get('/:idRecipe', async (req, res) => {
     try {

@@ -1,12 +1,12 @@
-import { CREATE_RECIPE, GET_ALL_RECIPES, GET_DETAILS, GET_RECIPES_BY_DIET, GET_RECIPE_BY_ID, GET_RECIPE_BY_NAME, GET_TYPE_DIETS,  } from "../actions"
+import { CREATE_RECIPE, GET_ALL_RECIPES, GET_DETAILS, GET_RECIPES_BY_DIET, GET_RECIPE_BY_NAME, GET_TYPE_DIETS,  } from "../actions"
 
 const initialState = {
     recipes: [],
     diets: [],
     details: {},
-    recipesFilterByDiet: [],
-    recipesFilterByName: []
-}
+    recipesDb: [],
+    recipesApi: []
+};
 
 
 export default function rootReducer(state=initialState, action) {
@@ -14,7 +14,6 @@ export default function rootReducer(state=initialState, action) {
             case CREATE_RECIPE:
                 return {
                     ...state,
-                    recipes: action.payload //[...state.recipes, {...action.payload}]
                 };
             case GET_ALL_RECIPES:
                 return {
@@ -31,21 +30,21 @@ export default function rootReducer(state=initialState, action) {
                     ...state,
                     diets: action.payload
                 };
-            case GET_RECIPE_BY_ID:
+            // case GET_RECIPE_BY_ID:
+            //     return {
+            //         ...state,
+            //         recipes: action.payload
+            //     };
+            case GET_RECIPE_BY_NAME:
+                return {
+                ...state,
+                recipes: action.payload
+            }   ;
+            case GET_DETAILS: 
                 return {
                     ...state,
-                    recipes: action.payload
+                    details: action.payload
                 };
-                case GET_RECIPE_BY_NAME:
-                    return {
-                    ...state,
-                    recipes: action.payload
-                };
-                case GET_DETAILS: 
-                    return {
-                        ...state,
-                        details: action.payload
-                    }
             default: return {...state};
         };
 };
