@@ -8,16 +8,23 @@ const detectDiet = function(diets) {
             let dietFilter = diets.map((d)=>d.name);
             return dietFilter;
         };
+    } else {
+        return diets;
     };
 };
 //steps api: es un array de objetos. [{step: 'string'},{step:'string'}]
 //steps db: es un array. ['blabla', 'blabla']
 const detectStep = function(steps) {
+    console.log(steps)
+    if(steps.length) {
     if(typeof steps[0] === 'string') {
         return steps;
     } else {
         let stepFilter = steps[0].steps.map((s)=>s.step);
         return stepFilter;
+    };
+    }  else {
+        return steps;
     };
 };
 
@@ -30,12 +37,12 @@ function dietsToUpperCase(dietas) {
     });
     return newArrayDiets;
 };
-// diets db ->['vegan','vegetarian','ketogenic']
+// diets db ->[{name:'vegan'},{'vegetarian'},'ketogenic']
 
 //steps --> [{name: '', steps: [{step: 1},{step: 1}]}]
 export default function CardRecipe(props){
     let dietas = detectDiet(props.diets);
-    dietas = dietsToUpperCase(dietas);
+    dietas.length?dietas = dietsToUpperCase(dietas): dietas = [];
     const pasos = detectStep(props.steps);
     return(
         <>

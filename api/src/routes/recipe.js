@@ -5,7 +5,7 @@ const {createRecipe, orderSortName, getAllDb, getAllAPI } = require('./models/mo
 router.post('/', async (req, res) => {
     try {
         const { name, summary, image, score, healthScore, steps, diets } = req.body;
-        if(!name || !summary || !image || !score || !healthScore || !steps || !diets) {
+        if(!name || !summary || !score || !healthScore || !steps || !diets) {
             res.status(404).send({msg: 'Missing Data'});
         } else {
             await createRecipe({name, summary, score, healthScore, steps, image, diets});

@@ -105,7 +105,7 @@ const getRecipeById = async (id) => {
 //     };
 //     const set = new Set(dietComplete);
 //     dietComplete = [...set];
-//     dietComplete = dietComplete.filter(e=>e !== null && e !== undefined && e !== '');
+//     dietComplete = dietComplete.filter(e=>e !== null && e !== undefined && e !== "");
 //     return dietComplete;
 // };
 
@@ -113,7 +113,7 @@ const getRecipeById = async (id) => {
 const getAllTypesDiets = async () => {
     const allRecipes = await getAll();
     let dietFilter = allRecipes.map(r=>r.diets);
-    let dietComplete = ['lacto vegetarian', 'ovo vegetarian', 'vegetarian', 'ketogenic'];
+    let dietComplete = ["lacto vegetarian", "ovo vegetarian", "vegetarian", "ketogenic"];
     dietFilter.forEach(d => {
         if(d.length >= 2) {
             d.forEach(e=> dietComplete.push(e));
@@ -123,7 +123,7 @@ const getAllTypesDiets = async () => {
     });
     let set = new Set(dietComplete);
     dietComplete = [...set];
-    dietComplete = dietComplete.filter(e=>e !== null && e !== undefined && e !== '');
+    dietComplete = dietComplete.filter(e=>e !== null && e !== undefined && e !== "");
     return dietComplete;
 };
 
@@ -139,7 +139,7 @@ const getTypeDiet = async () => {
     if(allDiets) {
         return allDiets;
     } else {
-        return {msg: 'No hay dietas'}
+        return {msg: "No hay dietas"}
     };
 };
 
@@ -155,13 +155,13 @@ const filterRecipesByDiets = async (diet) => {
             if(recipesFilterByDiet.length) {
                 return recipesFilterByDiet;
             } else {
-                return {msg: 'There are no recipes for the type of diet entered'};
+                return {msg: "There are no recipes for the type of diet entered"};
             };
         } else {
-            return {msg: 'The name of the diet is not valid'}
+            return {msg: "The name of the diet is not valid"}
         };
     } else {
-        return {msg: 'Diet name is required'}
+        return {msg: "Diet name is required"}
     };
     } catch (error) {
         console.log(error)
@@ -170,6 +170,7 @@ const filterRecipesByDiets = async (diet) => {
 
 
 //Creación de nueva receta.
+////diets = ['vegan','vegetarian']
 const createRecipe = async ({name, summary, score, healthScore, steps, image, diets}) => {
     const newRecipe = await Recipe.create({
         name,
@@ -179,18 +180,48 @@ const createRecipe = async ({name, summary, score, healthScore, steps, image, di
         steps,
         image
     });
-    const dietDb = await Diet.findAll({
-        where: {name: diets}
-    });
-    newRecipe.addDiet(dietDb);
+        let dietDb = await Diet.findAll({
+            where: {name: diets}
+        });
+       newRecipe.addDiet(dietDb);
 };
 
+// const createRecipe = async ({name, summary, score, healthScore, steps, image, diets}) => {
+//     const newRecipe = await Recipe.create({
+//         name,
+//         summary,
+//         score,
+//         healthScore,
+//         steps,
+//         image
+//     });
+//     if(diets.length > 1) {
+//         const dietDb = await diets.map(diet => {
+//              Diet.findAll({
+//                 where: {name: diet}
+//             });
+//         });
+//         dietDb.forEach(d => {
+//             newRecipe.addDiet(d);
+//         });
+//     } else {
+//         const dietDb = await Diet.findAll({
+//             where: {name: diets[0].name}
+//         });
+//         newRecipe.addDiet(dietDb);
+//     };
+// };
+// typeDiets.forEach(diet => {
+//     Diet.findOrCreate({
+//         where: { name: diet },
+//       })
+// });
 //orden por nombre para todas las recetas.
 const orderSortName = async (orden) => {
     try {
         if(orden) {
             const allRecipes = await getAll();
-            if(orden.toLowerCase() === 'asc') {
+            if(orden.toLowerCase() === 'nameAsc'.toLocaleLowerCase()) {
                 const recipesOrderAsc = allRecipes.sort((a,b) => {
                     if (a.name > b.name) {
                         return 1;
@@ -201,7 +232,8 @@ const orderSortName = async (orden) => {
                     return 0;
                 });
                 return recipesOrderAsc;
-            } else if(orden.toLowerCase() === 'desc') {
+            }
+            if(orden.toLowerCase() === 'nameDesc'.toLocaleLowerCase()) {
                 const recipesOrderDesc = allRecipes.sort((a,b) => {
                     if (a.name > b.name) {
                         return -1;

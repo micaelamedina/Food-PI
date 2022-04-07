@@ -13,8 +13,7 @@ export default function NavBar() {
             </div>
             <div>
                 <NavLink to={'/recipes/create'}><button>Create New Recipe</button></NavLink>
-            </div>
-            
+            </div> 
         </>
-    )
-}
+    );
+};

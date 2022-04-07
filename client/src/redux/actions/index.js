@@ -7,6 +7,9 @@ export const GET_TYPE_DIETS = 'GET_TYPE_DIETS';
 export const GET_RECIPE_BY_ID = 'GET_RECIPE_BY_ID';
 export const GET_RECIPE_BY_NAME = 'GET_RECIPE_BY_NAME';
 export const GET_DETAILS = 'GET_DETAILS';
+export const GET_RECIPE_DIET = 'GET_RECIPE_DIET';
+export const GET_ORDER_SCORE = 'GET_ORDER_SCORE';
+export const GET_ORDER_NAME = 'GET_ORDER_NAME'
 
 // export function getAllRecipes() {
 //     return function(dispatch) {
@@ -40,20 +43,19 @@ export const getAllRecipesByDiet = async (diet) => {
     return ({type: GET_RECIPES_BY_DIET, payload: recipesFilterByDiet.data});
 };
 
+export const getRecipesByDiet = (diet) => {
+    return {
+        type: GET_RECIPE_DIET,
+        payload: diet
+    }
+}
+
 export const getAllTypeDiets = () => {
     return async function(dispatch) {
         const allTypeDiets = await axios.get('http://localhost:3001/types');
         return (dispatch({type: GET_TYPE_DIETS, payload: allTypeDiets.data}))
     };
 };
-
-//repetida con getDetails
-// export const getRecipeById = (idRecipe) => {
-//     return async function(dispatch) {
-//         const recipeById = await axios.get(`http://localhost:3001/recipes/${idRecipe}`);
-//         return (dispatch({type: GET_RECIPE_BY_ID, payload: recipeById.data}))
-//     };
-// };
 
 export const getRecipeByName = (nameRecipe) => {
     return async function(dispatch) {
@@ -75,6 +77,26 @@ export const getDetails = (idRecipe) => {
 //         .then(rta => {dispatch({type: GET_DETAILS, payload: rta})})
 //     };
 
+export const orderByScore = (order) => {
+    return {
+        type: GET_ORDER_SCORE,
+        payload: order
+    };
+};
+
+export const orderByName = (order) => {
+    return {
+        type: GET_ORDER_NAME,
+        payload: order
+    };
+};
+
+// export const orderByNameBack = (order) => {
+//     return async function(dispatch) {
+//         const recipesByName = await axios.get(`http://localhost:3001/recipe/order/${order}`);
+//         return dispatch({type: GET_ORDER_NAME, payload: recipesByName.data})
+//     };
+// };
 
 //IMPORTANTE:
 /*

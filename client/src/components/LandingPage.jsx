@@ -1,15 +1,15 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import s from './styles/LandingPage.module.css';
 
 export default function LandingPage() {
     return (
-        <>
-        <div>
-        <h1>Welcome to the Food App Henry!</h1>
+        <div className={s.divContainer} >
+        <h1 className={s.title}>Welcome to the Food App Henry!</h1>
         <NavLink to={'/home'}>
-            <button>Start</button>
+            <button className={s.start}>START</button>
         </NavLink>
+
         </div>
-        </>
     );
 };

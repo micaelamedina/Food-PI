@@ -41,17 +41,8 @@ export default function RecipeDetail() {
                             key={recipe.id}
                             />
                         </div>
-                     : <h3>No hay recetas con ese nombre</h3>
+                     : <h3>Loading recipe...</h3>
             }
-            {/* <h3>Name: {name}</h3>
-            <img src={image} alt="Img Recipe" />
-            <h5>Diet: {diets}</h5>
-            <h5>Score: {score}</h5>
-            <h5>Healty Score: {healthScore}</h5>
-            <h5>Summary:</h5>
-            <span>{summary}</span>
-            <h5>Steps:</h5>
-            <span>{steps}</span> */}
         </>
     );
 };

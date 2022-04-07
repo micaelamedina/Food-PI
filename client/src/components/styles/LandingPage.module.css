@@ -1,0 +1,58 @@
+@font-face {
+    font-family: "Foodpacker";
+    src: url('./foodpacker/Foodpacker.otf');
+}
+
+/*
+#F29F05 -> naranja claro.
+#F28705 -> naranja intermedio
+#A6695B -> marron
+#F20505 -> rojo terracota
+#A60303 -> bordo
+c30e0e
+*/
+.divContainer {
+    display: flex;
+    text-align: center;
+}
+.start {
+    display: flex;
+    position: absolute;
+    padding: 2.5%;
+    border: #e42222 solid 1.5px 0.9;
+    border-radius: 15px;
+    background-color: rgba(233, 204, 17, 0.5);;
+    color: #494444;
+    font-size: 54px;
+    cursor:pointer;
+    height: 0%;
+    width: 12%;
+    left: 43%;
+    top: 28%;
+    margin-bottom: 1%;
+    box-shadow: 2px 4px 10px rgb(233, 205, 198, 0.9);
+    align-items: center;
+    justify-content: center;
+    
+    font-family: 'Contrail One', cursive;
+}
+/* //font-family: 'Chicle', cursive;
+
+boton:
+font-family: 'Contrail One', cursive;
+font-family: 'Skranji', cursive; 
+titulo:
+font-family: 'Oregano', cursive;*/
+.title{
+    display: flex;
+    position: absolute;
+    text-align: center;
+    font-family: "Foodpacker";
+    font-size: 75px;
+    height: 100px;
+    left: 16%;
+    top: 0px;
+    bottom: 100px;
+    color: rgb(242,159,5,0.8);
+    text-shadow: -3px 2px #ffffff, -3px -3px #ffffff, 3px -3px #ffffff, 3px 3px #f3f3f2;
+}
