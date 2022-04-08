@@ -1,20 +1,44 @@
-import React from "react";
 
+import s from './styles/Paginated.module.css';
 
-export default function Paginated({recipesPage, allRecipes, paginado}) {
+export default function Paginated({recipesPage, allRecipes, handleClickNumberPage, currentPage, maxLimitNumberPage, minLimitNumberPage, handleNextPage, handlePrevPage}) {
     const numberPage = [];
     for (let i = 1; i <= Math.ceil(allRecipes.length / recipesPage); i++) {
             numberPage.push(i);
     };
+    let pageIncrement = null;
+    if(numberPage.length > maxLimitNumberPage) {
+        pageIncrement = <li onClick={handleNextPage}> &hellip; </li>
+    };
+    let pageDecrement = null;
+    if(numberPage.length < maxLimitNumberPage) {
+        pageDecrement = <li onClick={handlePrevPage}> &hellip; </li>
+    };
     return(
         <div>
             <nav>
-                <ul>
+                <ul className={s.numberPage}>
+                    <li>
+                    <button disabled={currentPage === 1 ? true : false} onClick={handlePrevPage}>{"<"}</button>
+                    </li>
+                    {pageDecrement}
                     {
-                        numberPage?numberPage.map(n => {
-                            return <button key={n} onClick={(e)=>paginado(n)}>{n}</button>
-                        }):<p>Loading...</p>
+                        
+                            numberPage?numberPage.map((n,i) => {
+                                if(n < maxLimitNumberPage+1 && n > minLimitNumberPage) {
+                                return <li className={parseInt(currentPage) === parseInt(n) ? s.active : null}
+                                key={n} id={n} onClick={(e)=>handleClickNumberPage(e)}>{n}
+                                </li>
+                            } else {
+                                return null;
+                            }})
+                            :<p>Loading...</p>
                     }
+                    {pageIncrement}
+                    <li>
+                    <button disabled={currentPage === Math.ceil(allRecipes.length / recipesPage) ? true : false}
+                    onClick={handleNextPage}>{">"}</button>
+                    </li>
                 </ul>
             </nav>
         </div>

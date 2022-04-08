@@ -1,6 +1,6 @@
 import React from "react";
 
-const detectDiet = function(diets) {
+function detectDiet(diets) {
     if(diets.length){
         if(typeof diets[0] === 'string') {
             return diets;
@@ -13,8 +13,8 @@ const detectDiet = function(diets) {
     };
 };
 //steps api: es un array de objetos. [[{step: 'string'},{step:'string'}]]
-//steps db: es un array. ['blablasdfsdfffssf']
-const detectStep = function(steps) {
+//steps db: es un array. ['estos son los pasos de la receta']
+function detectStep (steps) {
     if(steps.length) {
     if(typeof steps === 'string') {
         return steps;
@@ -39,10 +39,23 @@ function dietsToUpperCase(dietas) {
 // diets db ->[{name:'vegan'},{'vegetarian'},'ketogenic']
 
 //steps --> [{name: '', steps: [{step: 1},{step: 1}]}]
+
+// function validateUrl(props) {
+//     let expression = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi
+//     var urlExp = new RegExp(expression);
+//     if(!props.image.match(urlExp)) {
+//         props.image = "https://cdn.pixabay.com/photo/2015/08/25/03/50/background-906135_1280.jpg"
+//         return;
+//     } else {
+//         return;
+//     };  
+// }
 export default function CardRecipe(props){
     let dietas = detectDiet(props.diets);
     dietas.length?dietas = dietsToUpperCase(dietas): dietas = [];
-    let image = props.image ? props.image : "https://cdn.pixabay.com/photo/2015/08/25/03/50/background-906135_1280.jpg"; 
+    let expression = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi
+    var urlExp = new RegExp(expression);
+    let image = props.image === "" ? "https://cdn.pixabay.com/photo/2015/08/25/03/50/background-906135_1280.jpg" : props.image.match(urlExp)? props.image : "https://cdn.pixabay.com/photo/2015/08/25/03/50/background-906135_1280.jpg"; 
     console.log(image)
     const step = detectStep(props.steps);
     return(

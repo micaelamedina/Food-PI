@@ -1,0 +1,30 @@
+.numberPage {
+    list-style: none;
+    display: flex;
+}
+
+.numberPage li {
+    padding: 10px;
+    border: 1px solid black;
+    cursor: pointer;
+}
+
+.numberPage li.active {
+    background-color: black;
+    color: white;
+}
+
+.numberPage li button {
+    background-color: transparent;
+    border: none;
+    color: black;
+    font-size: 15px;
+    text-align: center;
+    cursor: pointer;
+}
+
+.numberPage li button:hover {
+    background-color: white;
+    color: black
+}
+/* //agregar list image */
