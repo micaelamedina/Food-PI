@@ -35,8 +35,8 @@ export default function rootReducer(state=initialState, action) {
                 let recipeName = action.payload.msg ? [] : action.payload;
                 return {
                 ...state,
-                recipes: recipeName,
-                order: ''
+                recipeFilter: recipeName,
+                order: GET_RECIPE_BY_NAME
                 };
             case GET_DETAILS: 
                 return {

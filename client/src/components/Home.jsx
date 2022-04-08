@@ -90,7 +90,7 @@ export default function Home(props) {
                             <Recipe 
                             name={recipe.name}
                             diets={recipe.diets.map(r=>r)}
-                            image={recipe.image}
+                            image={recipe.image !== "" ? recipe.image : "./styles/img/defaultImage.jpg"}
                             id={recipe.id}
                             key={recipe.id}
                             />
@@ -100,7 +100,7 @@ export default function Home(props) {
                         <h3>Oops! there are no recipes for that filter</h3>
                         <p>Try filtering again</p>
                         <p>Want to create your own recipe?</p>
-                        <p><NavLink to={'/create/recipe'}>Click Here!</NavLink></p>
+                        <p><NavLink to={'/recipes/create'}>Click Here!</NavLink></p>
                         </div>}
             </div>}
         </div>

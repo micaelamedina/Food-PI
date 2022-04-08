@@ -5,7 +5,7 @@ const {Recipe, Diet} = require('../../db');
 
 //Info de la api.
 const getAllAPI = async () => {
-        const dataApi = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true&apiKey=${API_KEY_4}&number=50`);
+        const dataApi = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true&apiKey=${API_KEY_5}&number=50`);
         const filterApi = await dataApi.data.results.map(api => {
             return {
                 id: api.id,
@@ -110,10 +110,12 @@ const getRecipeById = async (id) => {
 // };
 
 //obtener todos los tipos de dietas posibles.
+
+
 const getAllTypesDiets = async () => {
     const allRecipes = await getAll();
     let dietFilter = allRecipes.map(r=>r.diets);
-    let dietComplete = ["lacto vegetarian", "ovo vegetarian", "vegetarian", "ketogenic"];
+    let dietComplete = ["lacto vegetarian", "ovo vegetarian", "vegetarian", "ketogenic", "pescetarian","paleo", "low fodmap"];
     dietFilter.forEach(d => {
         if(d.length >= 2) {
             d.forEach(e=> dietComplete.push(e));
@@ -121,15 +123,53 @@ const getAllTypesDiets = async () => {
             dietComplete.push(d[0]);
         };
     });
-    let set = new Set(dietComplete);
-    dietComplete = [...set];
+    // let set = new Set(dietComplete);
+    // dietComplete = [...set];
     dietComplete = dietComplete.filter(e=>e !== null && e !== undefined && e !== "");
-    return dietComplete;
+    // dietComplete = dietComplete.map((diet) => {
+    //     return {name: diet}
+    // });
+    return dietComplete; 
 };
 
+
 //obtener y/o crear tipos de dietas.
+// const getTypeDiet = async () => {
+//     let typeDiets = await getAllTypesDiets();
+    
+//     typeDiets.forEach(diet => {
+//         console.log(diet)
+//         Diet.findOrCreate({
+//             where: { name: diet },
+//           })
+//     });
+//     let allDiets = await Diet.findAll();
+//     if(allDiets) {
+//         return allDiets;
+//     } else {
+//         return {msg: "No hay dietas"}
+//     };
+// };
+
 const getTypeDiet = async () => {
-    let typeDiets = await getAllTypesDiets();
+    let typeDiets = [
+        "gluten free",
+        "ketogenic",
+        "vegetarian",
+        "lacto ovo vegetarian",
+        "vegan",
+        "pescatarian",
+        "paleolithic",
+        "primal",
+        "fodmap friendly",
+        "dairy free",
+        "whole 30",
+        "pescetarian",
+        "paleo",
+        "low fodmap",
+        "lacto vegetarian",
+        "ovo vegetarian"
+      ];
     typeDiets.forEach(diet => {
         Diet.findOrCreate({
             where: { name: diet },
@@ -142,6 +182,70 @@ const getTypeDiet = async () => {
         return {msg: "No hay dietas"}
     };
 };
+
+
+
+
+// const getTypeDiet = async () => {
+//     let typeDiets = await getAllTypesDiets(); //[{name: vegan},{name: ketogenic}] -> todos los que me da la funcion getAllTypesDiets.
+//     let dietsDb = await Diet.findAll(); //[{name: vegan},{name: ketogenic}] -> todo lo que haya creado en la db. (o no, puede estar vacio)
+//     let keysType = typeDiets.filter((e) => e.name) // aca van a estar todos los tipos si o si. [vegan, ketogenic,]
+//     let keysDb = dietsDb.filter((e) => e.name) // aca van a estar todos los que tiene la db. (o no, puede estar vacio)
+//     var keysFilter = [];
+//     for (let i = 0; i < keysType.length; i++) {
+//         if(keysDb.length) {
+//             keysFilter = keysType.filter((e) => e !== keysDb[i]); //aca tengo todas las dietas que vienen de la api y no estan en la db.
+//             console.log(keysFilter)
+//         } else {
+//             keysFilter = []
+//         };
+//     };
+//     if(!dietsDb.length) {
+//         await Diet.bulkCreate(typeDiets);
+//         const allDietsDb = await Diet.findAll();
+//         return allDietsDb;
+//     } else if(keysFilter.length >= 1) {
+//         typeDiets.forEach((diet) => {
+//             Diet.findOrCreate({
+//                 where: {name: diet.name}
+//             });
+//         });
+//         let allDiets = await Diet.findAll();
+//         return allDiets;
+//     } else {
+//         return dietsDb;
+        
+//     };
+// };
+// const getTypeDiet = async () => {
+//     let typeDiets = await getAllTypesDiets();
+//     typeDiets.forEach(diet => {
+//         Diet.findOrCreate({
+//             where: { name: diet },
+//           })
+//     });
+//     let allDiets = await Diet.findAll();
+//     if(allDiets) {
+//         return allDiets;
+//     } else {
+//         return {msg: "No hay dietas"}
+//     };
+// };
+//este funciona pero si me agregan algo desde la Db no lo toma en cuenta.
+// const getTypeDiet = async () => {
+//     const dietsDb = await Diet.findAll();
+//     if(!dietsDb.length) {
+//         let dietsAll = await getAllTypesDiets();
+//         dietsAll = dietsAll.map((diet) => {
+//             return {name: diet} //[{name:vegan}, {name:ketogenic}]
+//         });
+//         await Diet.bulkCreate(dietsAll);
+//         const allDietsDb = await Diet.findAll();
+//         return allDietsDb;
+//     } else {
+//         return dietsDb;
+//     };
+// };
 
 //filtro por tipo de dieta
 const filterRecipesByDiets = async (diet) => { 
@@ -262,7 +366,7 @@ const ordenamiento = async (ordenamiento) => {
         return recetaOrdenada;
     } catch (error) {
         console.log(error)
-    }; 
+    };
 };
 
 module.exports = {

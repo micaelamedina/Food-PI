@@ -23,7 +23,7 @@ c30e0e
     border-radius: 15px;
     background-color: rgba(233, 204, 17, 0.5);;
     color: #494444;
-    font-size: 54px;
+    font-size: 60px;
     cursor:pointer;
     height: 0%;
     width: 12%;
@@ -34,7 +34,7 @@ c30e0e
     align-items: center;
     justify-content: center;
     
-    font-family: 'Contrail One', cursive;
+    font-family: "Foodpacker";
 }
 /* //font-family: 'Chicle', cursive;
 

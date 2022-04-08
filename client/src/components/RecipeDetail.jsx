@@ -18,7 +18,6 @@ export default function RecipeDetail() {
     }, [dispatch, idRecipe]);
 
     const recipe = useSelector((state) => state.details);
-    console.log(recipe)
     return(
         <>
             <div>

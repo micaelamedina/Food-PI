@@ -12,12 +12,11 @@ const detectDiet = function(diets) {
         return diets;
     };
 };
-//steps api: es un array de objetos. [{step: 'string'},{step:'string'}]
-//steps db: es un array. ['blabla', 'blabla']
+//steps api: es un array de objetos. [[{step: 'string'},{step:'string'}]]
+//steps db: es un array. ['blablasdfsdfffssf']
 const detectStep = function(steps) {
-    console.log(steps)
     if(steps.length) {
-    if(typeof steps[0] === 'string') {
+    if(typeof steps === 'string') {
         return steps;
     } else {
         let stepFilter = steps[0].steps.map((s)=>s.step);
@@ -43,21 +42,23 @@ function dietsToUpperCase(dietas) {
 export default function CardRecipe(props){
     let dietas = detectDiet(props.diets);
     dietas.length?dietas = dietsToUpperCase(dietas): dietas = [];
-    const pasos = detectStep(props.steps);
+    let image = props.image ? props.image : "https://cdn.pixabay.com/photo/2015/08/25/03/50/background-906135_1280.jpg"; 
+    console.log(image)
+    const step = detectStep(props.steps);
     return(
         <>
             <h3>Name: {props.name}</h3>
             <h5>Diets:</h5>
             <ul>
             {
-                dietas.length?dietas.map(e=>{
+                dietas.length?dietas.map((e,i)=>{
                     return(
-                        <li>{e}</li>
+                        <li key={i}>{e}</li>
                     )
                 }):'This recipe does not belong to a specific diet.'
             }
             </ul>
-            <img src={props.image} alt="Img Recipe" />
+            <img src={image} alt="Img Recipe" />
             <h5>Score: {props.score}</h5>
             <h5>Health Score: {props.healthScore}</h5>
             <h5>Summary:</h5>
@@ -66,11 +67,11 @@ export default function CardRecipe(props){
                 <h5>Steps:</h5>
                 <ol>
                 {
-                    pasos.length?pasos.map((s)=>{
+                    Array.isArray(step)?step.length?step.map((s,i)=>{
                         return(
-                            <li>{s}</li>
+                            <li key={i}>{s}</li>
                         )
-                    }) : 'This recipe does not have a defined step by step.'
+                    }):'This recipe does not have a defined step by step.' : <li>{step}</li>
                 }
                 </ol>
             </div>

@@ -1,91 +1,25 @@
 import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector } from 'react-redux'
-import { NavLink} from "react-router-dom";
+import { NavLink, useNavigate} from "react-router-dom";
 import { createRecipe, getAllTypeDiets } from "../redux/actions";
 import NavBar from "./NavBar";
-import s from '../components/styles/RecipeCreate.module.css';
-
-//(name, summary, score, healthScore, steps, image, diets) orden en el que recibe la info la api.
-//cambie en el back lo que recibe la ruta y la funcion. estaba con parametros normales, los agregue en un objeto.
-//funciona en postman pero hay que probarlo.
 
 //Pone la primer letra de mi array de dietas en mayúscula.
 const dietsToUpperCase = (dietsArray) => {
   let newArrayDiets = dietsArray.map(d=> {
       return d.name[0].toUpperCase() + d.name.slice(1);
-  })
+  });
   return newArrayDiets;
-}
-
-//Genera un id incremental para que nunca se me repita el id de los steps.
-
-// function* incremental() {
-//   let index = 1
-//   while(true) {
-//       yield index;
-//       index++;
-//   };
-// };
-// let idIncremental = incremental();
-
-// const inputNameValidate = (input) => {
-//   let errors = {}
-//   if(!input.name || input.name === "") {
-//      errors.name = 'The name of the recipe is required' 
-//   }
-//   if(typeof Number(input.name) === 'number') {
-//      errors.name = 'El nombre de la receta no puede contener solo numeros.' 
-//   };
-//   return errors;
-// };
-
-// const inputScoreValidate = (input, prop) => {
-//  let nameMsg = "";
-//  let errors = {};
-//  if(prop === 'score') {
-//    nameMsg = 'score'
-//  } else if(prop === 'healthScore') {
-//    nameMsg = 'health score'
-//  }
-//  if(!input[prop] || input[prop] === "") {
-//    errors[prop] = `The ${nameMsg} of the recipe is required`
-//  }
-//  if(typeof input[prop] !== 'number') {
-//    errors[prop] = `El ${nameMsg} de la receta solo admite numeros`
-//  }
-//  if(input[prop] > 100 ) {
-//    errors[prop] = `El ${nameMsg} maximo es 100`
-//  };
-//  return errors;
-// };
-
-const inputStepsDietsValidate = (input) => {
-  let errors = {};
-     if(input.step === "") {
-        errors.steps = `Los pasos no pueden ser nulos`
-    } 
-  return errors;
 };
-
-// const inputImageValidate = (input) => {
-//   let errors = {};
-//   let exp = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi
-//  // let expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
-//   var urlExp = new RegExp(exp);
-//   if(!input.image || input.image === "") {
-//     errors.image = 'Url is required'
-//   }
-//   if(!input.image.match(urlExp)) {
-//     errors.image = 'Ingrese url valida.'
-//   }
-//   return errors;
-//};
-
+function isObjEmpty(obj) {
+  if(Object.keys(obj).length === 0) {
+    return true;
+  } else {
+    return false;
+  }
+};
 const inputValidate = (input) => {
   let errors = {};
- // let expression = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi
-  //var urlExp = new RegExp(expression);
-
   if(!isNaN(Number(input.name))) {
     errors.name = 'El nombre de la receta no puede contener solo numeros.' 
  } if(input.name === "") {
@@ -110,390 +44,175 @@ const inputValidate = (input) => {
   errors.step = `The steps of the recipe is required`}
    if(input.summary === "") {
   errors.summary = 'The summary of the recipe is required';
-} //if(!input.image.match(urlExp) && input.image !== "") {
-//   errors.image = 'La URL no es valida. Debe ingresar una valida. Si deja en blanco va una por defecto.'}
- if(input.diets.length === 0) {
-  errors.diets = `The diets of the recipe is required`
-}
-return errors;
+} if(input.diets.length === 0) {
+  errors.diets = 'You must select at least one type of diet'
+} if(input.steps === "") {
+  errors.steps = 'The steps of the recipe is required'
 }
 
-function isObjEmpty(obj) {
-  if(Object.keys(obj).length === 0) {
-    return true;
-  } else {
-    return false;
-  }
+return errors;
 };
+
 export default function RecipeCreate() {
-    const dispatch = useDispatch();
-    const [input, setInput] = useState({
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const diets = useSelector((state) => state.diets);
+  let dietsUpper = dietsToUpperCase(diets);
+  const [input, setInput] = useState({
+      name: "",
+      summary: "",
+      score: "",
+      healthScore: "",
+      steps: "",
+      diets: [],
+      image: ""
+  });
+  const [errors, setErrors] = useState({});
+  const [bool, setBool] = useState(true);
+  useEffect(() => {
+    dispatch(getAllTypeDiets())
+  }, [dispatch]);
+
+  const handleChangeInput = (event) => {
+      event.preventDefault();
+      setErrors(inputValidate({
+          ...input,
+          [event.target.name]: event.target.value
+      }));
+      let stateBool = isObjEmpty(errors) !== true ? true : false;
+      setBool(stateBool)
+      setInput({
+        ...input,
+        [event.target.name]: event.target.value
+      });
+  };
+
+  const handleChangeSelect = (event) => {
+      event.preventDefault();
+      setErrors(inputValidate({
+        ...input,
+        [event.target.name]: event.target.value
+      }));
+      let stateBool = isObjEmpty(errors) !== true ? true : false;
+      setBool(stateBool)
+      setInput({
+        ...input,
+        diets: [...input.diets, event.target.value]
+      });
+  };
+
+  const handleSubmit = (event) => {
+      event.preventDefault();
+      dispatch(createRecipe(input));
+      alert('Recipe added successfully 😁');
+      setInput({
         name: "",
         summary: "",
-        image: "",
         score: "",
         healthScore: "",
-        steps: [],
+        steps: "",
         diets: [],
-    });
-    //El numero de cada prop, es el número que le corresponde a cada tipo de dieta en el id de la bd.
-    const [diet, setDiet] = useState({
-        1: false,
-        2: false,
-        3: false,
-        4: false,
-        5: false,
-        6: false,
-        7: false,
-        8: false,
-        9: false,
-        10: false,
-        11: false,
-        12: false,
-        13: false,
-    });
-   // const [inputDiet, setInputDiet] = useState({name:"" });
-    //se usa para agregar step al arreglo de steps.
-    const [step, setStep] = useState({step:""});
-    //errores para validar formulario
-    const [errors, setErrors] = useState({});
-    const [disabled, setDisabled] = useState({
-      disabled: true
-    });
-    //Al dar click en en botón Add Steps se agrega un step con el contenido del input que se completa al lado de dicho botón.
-    //, id: idIncremental.next().value
-    const addSteps = (e) => {
-      setInput({...input, steps: [...input.steps, {...step}] });
-      setStep({step:""})
-    }
-    //Al dar click en deleteSteps permite eliminar steps que se hayan agregado (antes de enviar el formulario) y ya no se quieren.
-    const deleteSteps = (event) => {
-      console.log(event)
-       let filterStep = input.steps.filter(s=>s.step !== event.target.previousElementSibling.innerText);
-       console.log(filterStep);
-       setInput({...input, steps: filterStep})
-    }
-    //inputAddStepsChange permite captar el valor del input donde escribimos los steps.
-    //step: {step:""}
-    const inputAddStepsChange = (event) => {
-      setStep({
-      ...step,
-      [event.target.name]: event.target.value,
-    });
-    setErrors(inputStepsDietsValidate({
-      ...errors,
-      [event.target.name]: event.target.value,
-  }));
-    setDisabled({
-      disabled: isObjEmpty(errors)
-    });
-  };
-    
-    //useEffect se ejecuta cuando se monta el componente y cuando se genera algún cambio en diet. De esta manera al tildar los checkbox de dietas, el cambio se ve reflejado en el momento. Si no se coloca de esta manera, el cambio se efectúa cuando se vuelve a actualizar el componente.
-    useEffect(() => {
-      dispatch(getAllTypeDiets())
-  }, [dispatch, diet])
-
-    const diets = useSelector((state) => state.diets);
-    let dietsUpperCase = dietsToUpperCase(diets);
-
-    //Capta el valor de los inputs name, summary, score, healthScore,
-    const handleChange = (event) => {
-      event.preventDefault();
-      if(event.target.name === 'healthScore' || event.target.name === 'score') {
-        if(typeof event.target.value === 'number') {
-          setErrors(inputValidate({
-            ...input,
-            ...errors,
-            [event.target.name]: event.target.value,
-        }))
-          setDisabled({
-            disabled: isObjEmpty(errors)
-        });
-          setInput((prev) => ({
-            ...prev,
-            [event.target.name]: Number(event.target.value),
-        }));
-        } else {
-          setErrors(inputValidate({
-            ...input,
-            ...errors,
-            [event.target.name]: event.target.value,
-        }))
-          setDisabled({
-            disabled: isObjEmpty(errors)
-        });
-          setInput((prev) => ({
-            ...prev,
-            [event.target.name]: event.target.value,
-          }));
-        };
-      } else {
-        setErrors(inputValidate({
-          ...input,
-          ...errors,
-          [event.target.name]: event.target.value,
-      }))
-      setDisabled({
-        disabled: isObjEmpty(errors)
+        image: ""
       });
-        setInput((prev) => ({
-          ...prev,
-          [event.target.name]: event.target.value,
-        }));
-      };
-    };
-
-    //Enviar la receta.
-    const handleSubmit = (event) => {
-      event.preventDefault();
-      if(isObjEmpty(errors) === true) {
-        dispatch(createRecipe(input));
-        console.log(input)
-        setInput({name: "", summary: "", image: "", score: "", healthScore: "", steps: [], diets: []});
-        setDiet({ 1: false, 2: false, 3: false, 4: false, 5: false, 6: false, 7: false, 8: false, 9: false, 10: false, 11: false, 12: false, 13: false,})
-        alert('Recipe added successfully 😁');
-      } else {
-        let clave = Object.keys(errors);
-        return (<div>
-          <ul>
-          {clave.length?clave.map((c,i)=>{
-            return(
-              <li>Campo: {c} Error: {errors[clave[i]]}</li>
-            )
-        }):'bueno'}
-          </ul>
-        </div>)
-        
-      }
-        
-        
-    };
-    //Reseteo del formulario.
-    const handleReset = (event) =>{
-        event.preventDefault();
-        setInput({name: "", summary: "", image: "", score: "", healthScore: "", steps: [], diets: []});
-    };
-
-    //diets: [{name: 'vegan'}, {name: 'vegetarian'}]
-    //diet: {1: false, 2: false, 3:false}
-    //inputDiet: {name:vegan}
-    // const handleChangeCheckbox = (event) =>{
-    //   event.preventDefault();
-    //   console.log(event.target.name) // numero de receta cargado en diet.
-    //   console.log(event.target.value) //nombre de la receta.
-    //   setInput({
-    //     ...input,
-    //     diets: [...input.diets, {name: event.target.value}]
-    //   });
-    //   setDiet({
-    //     ...diet,
-    //     [event.target.name]: false,
-    //   });
-
-  //}
-  //handleChangeCheckbox permite tildar y destildar en el formulario modificando el estado que se envia al final. De esta manera evitamos que si al seleccionar un tipo de dieta queremos cambiarla, no la agregue al array de dietas.
-    // const handleChangeCheckbox = (event) => {
-    //   event.preventDefault();
-    //   const filter = input.diets.filter(d=> d.name === event.target.value);
-    //   if(filter.length) {
-    //       let dietFilter = input.diets.filter(d=>d.name !== event.target.value);
-    //       setInput({
-    //         ...input,
-    //         ...errors,
-    //         diets: dietFilter
-    //       });
-    //       setDiet({
-    //         ...diet,
-    //         [event.target.name]: false
-    //       });
-    //       setDisabled({
-    //         ...errors,
-    //         ...input,
-    //         disabled: isObjEmpty(errors)
-    //       });
-    //   } else {
-    //       setInput({
-    //         ...input,
-    //         diets: [...input.diets, {name: event.target.value}]
-    //       });
-    //       setDiet({
-    //         ...diet,
-    //         [event.target.name]: true
-    //       })
-    //   };
-    //   setErrors(inputStepsDietsValidate({
-    //     ...errors,
-    //     ...input,
-    //     ...diet,
-    //     [event.target.name]: event.target.value,
-    // }))
-    // setDisabled({
-    //   ...errors,
-    //   ...disabled,
-    //   ...input,
-    //   disabled: isObjEmpty(errors)
-    // });
-    // };
-    const handleChangeCheckbox = (event) => {
-      event.preventDefault();
-      const filter = input.diets.filter(d=> d === event.target.value);
-      if(filter.length) {
-          let dietFilter = input.diets.filter(d=>d !== event.target.value);
-          setErrors(inputValidate({
-            ...input,
-            ...errors,
-            diets: event.target.value
-          }))
-          setDisabled({
-            disabled: isObjEmpty(errors)
-          });
-          setInput({
-            ...input,
-            diets: dietFilter
-          });
-          setDiet({
-            ...diet,
-            [event.target.name]: false
-          });
-      } else {
-        setErrors(inputValidate({
-          ...input,
-          ...errors,
-          diets: event.target.value
-        }))
-        setDisabled({
-          disabled: isObjEmpty(errors)
-        });
-          setInput({
-            ...input,
-            diets: [...input.diets, event.target.value]
-          });
-          setDiet({
-            ...diet,
-            [event.target.name]: true
-          })
-          
-      };
-    //   setErrors(inputStepsDietsValidate({
-    //     ...errors,
-    //     ...input,
-    //     ...diet,
-    //     [event.target.name]: event.target.value,
-    // }))
-    // setDisabled({
-    //   ...errors,
-    //   ...disabled,
-    //   ...input,
-    //   disabled: isObjEmpty(errors)
-    // });
-    };
-    return(
-        <>
-            <div className={s.divGral}>
+      navigate('/home');
+  };
+  const handleClikDelete = (event) => {
+    console.log(event.target.value)
+    event.preventDefault();
+    setInput({
+      ...input,
+      diets: input.diets.filter((d) => d.toLowerCase() !== event.target.value.toLowerCase())
+    });
+  }
+  return (
+    <div>
+        <div>
+            <NavLink to={'/home'}><button>Go to Home</button></NavLink>
+        </div>
+        <div>
+            <NavBar/>
+        </div>
+          <h3>Create New Recipe</h3>
+          <p>You can then create a new recipe.</p>
+          <p>To do this you must complete the following form.</p>
+          <br />
+        <div>
+            <form onSubmit={(e)=>handleSubmit(e)}>
               <div>
-                  <NavLink to={'/home'}><button>Go to Home</button></NavLink>
+                <label>Name</label>
+                <input type="text" placeholder="Recipe Name" name={"name"} value={input.name} onChange={(e)=>handleChangeInput(e)}/>
+                {
+                  errors.name && <p>{errors.name}</p>
+                }              
               </div>
               <div>
-                  <NavBar/>
+                <label>Summary</label>
+                <input type="text" placeholder="Recipe summary" name={"summary"} value={input.summary} onChange={(e)=>handleChangeInput(e)}/>
+                {
+                  errors.summary && <p>{errors.summary}</p>
+                } 
               </div>
-                <h3>Create New Recipe</h3>
-                <p>You can then create a new recipe.</p>
-                <p>To do this you must complete the following form.</p>
-                <br />
-            </div>
-            <div>
-              <form onSubmit={e=>handleSubmit(e)}>
-                  <div>
-                    <label>Name</label>
-                    <input type="text" placeholder="Recipe Name" name={"name"} value={input.name} onChange={(e)=>handleChange(e)}/>
-                    {
-                      errors.name && (
-                        <p>{errors.name}</p>
-                      )
-                    }
-                  </div>
-                  <div>
-                    <label>Summary</label>
-                    <input type="text" placeholder="Recipe summary" name={"summary"} value={input.summary} onChange={(e)=>handleChange(e)}/>
-                    {
-                      errors.summary && (
-                        <p>{errors.summary}</p>
-                      )
-                    }
-                  </div>
-                  <div>
-                    <label>Image</label>
-                    <input type="text" placeholder="Recipe image" name={"image"} value={input.image} onChange={(e)=>handleChange(e)}/>
-                    {/* {
-                      errors.image && (
-                        <p>{errors.image}</p>
-                      )
-                    } */}
-                  </div>
-                  <div>
-                    <label>Score</label>
-                    <input type="text" placeholder="Recipe Score" name={"score"} value={input.score} onChange={(e)=>handleChange(e)}/>
-                    {
-                      errors.score && (
-                        <p>{errors.score}</p>
-                      )
-                    }
-                  </div>
-                  <div>
-                    <label>Healthy food level</label>
-                    <input type="text" placeholder="Healthy food level of your recipe" name={"healthScore"} value={input.healthScore} onChange={e=>handleChange(e)}/>
-                    {
-                      errors.healthScore && (
-                        <p>{errors.healthScore}</p>
-                      )
-                    }
-                  </div>
-                  <div>
-                    <label>Steps:</label>
-                    <input type="text" placeholder="Tell us the step by step of your recipe here" name={"step"} value={step.step} onChange={e=>inputAddStepsChange(e)}/>
-                    <input type="button" value="Add Steps" name={"steps"} onClick={(e)=>addSteps(e)} disabled={disabled.disabled}/>
-                    {
-                      input.steps?input.steps.map((el, i) => (
-                        <div key={`step-${i}`}>
-                          <label htmlFor={`step-${i}`}>{`Step #${i + 1}`}</label>
-                          <p>{el.step}</p>
-                          <input type="button" value="X" name="delete" id={++i} key={i} onClick={(e) => deleteSteps(e)}/>
-                        </div>
-                      )) : 'Aguardando pasos'
-                    }
-                    {
-                      errors.steps && (
-                        <p>{errors.steps}</p>
-                      )
-                    }
-                  </div>
-                      <h5>Diet Types</h5>
-                      <p>Select what type of diets your recipe can belong to.</p>
-                      <p>Your recipe can belong to one or more types of diets.</p>
-                  <div>
+              <div>
+                <label>Image</label>
+                <input type="text" placeholder="Recipe image" name={"image"} value={input.image} onChange={(e)=>handleChangeInput(e)}/>
+                {
+                  errors.image && <p>{errors.image}</p>
+                } 
+              </div>
+              <div>
+                <label>Score</label>
+                <input type="number" placeholder="Recipe Score" name={"score"} value={input.score} onChange={(e)=>handleChangeInput(e)}/>
+                {
+                  errors.image && <p>{errors.image}</p>
+                } 
+              </div>
+              <div>
+                <label>Healthy food level</label>
+                <input type="number" placeholder="Healthy food level of your recipe" name={"healthScore"} value={input.healthScore} onChange={e=>handleChangeInput(e)}/>
+              </div>
+              <div>
+                <label>Steps</label>
+                <input type="text" placeholder="Steps" name={"steps"} value={input.steps} onChange={e=>handleChangeInput(e)}/>
+              </div>
+              <div>
+              <label>Diets</label>
+                <select onChange={e=>handleChangeSelect(e)}>
+                  <option value="selectDiets">Select Diets</option>
                   {
-                      dietsUpperCase?dietsUpperCase.map((e,i)=>{
-                          return(
-                              <div key={i}>
-                              <label>{e}</label>
-                              <input type="checkbox" name={diets[i].id} 
-                              value={e.toLowerCase()} checked={diet[diets[i].id]} onChange={(e)=>handleChangeCheckbox(e)}/>
-                              </div>
-                          );
-                      }):'This recipe does not belong to a specific diet.'
+                    dietsUpper?dietsUpper.map((d, i)=>(
+                      <option key={i} value={d.toLowerCase()}>
+                        {d}
+                      </option>
+                    )):''
                   }
+                </select>
+              <div>
+                <ul>
                   {
-                      errors.diets && (
-                        <p>{errors.diets}</p>
-                      )
+                    input.diets.length >= 1 ? input.diets.map((d, i) => (
+                      <div key={i}>
+                      <li>{d[0].toUpperCase() + d.slice(1)}</li>
+                      <button value={d} onClick={(e)=>handleClikDelete(e)}>x</button>
+                      </div>
+                    )) : <p>You can select one or more types of diets</p>
                   }
-                  </div>
-                  <input type={"submit"} value={"Add Recipe"} />
-                  <button type={"reset"} onClick={(e)=>handleReset(e)}>Reset Form</button>
-              </form>
-            </div>
-        </>
-    );
-};
+                </ul>
+              </div>
+              </div>
+              <br/>
+              <div>
+                <button type="submit" disabled={bool}>Add Recipe</button>
+                {
+                  bool && <p>Please complete the form</p>
+                }
+              </div>
+              <div>
+                <button type="submit">Reset Form</button>
+              </div>
+            </form>
+        </div>
+  </div>
+  )
 
+}
+//d.name[0].toUpperCase() + d.name.slice(1);

@@ -32,8 +32,6 @@ export function getAllRecipes() {
 export const createRecipe = (input) => {
     return async function(dispatch) {
         const postRecipe = await axios.post('http://localhost:3001/recipe', input)
-        console.log(postRecipe)
-        console.log(postRecipe.data)
         return postRecipe;
     };
 };

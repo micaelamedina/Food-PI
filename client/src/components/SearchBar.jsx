@@ -20,7 +20,7 @@ export default function SearchBar() {
         <>
             <div>
                 <label>Search Recipe</label>
-                <input type={"search"} autoCapitalize="off" autoComplete="off" placeholder="Recipe Name" onChange={e=>handleChange(e)}/>
+                <input value={search} name={search} type={"search"} autoCapitalize="off" autoComplete="off" placeholder="Recipe Name" onChange={e=>handleChange(e)}/>
                 <button onClick={e=>handleSubmit(e)}>Search</button>
             </div>
         </>

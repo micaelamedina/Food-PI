@@ -7,7 +7,7 @@ export default function LandingPage() {
         <div className={s.divContainer} >
         <h1 className={s.title}>Welcome to the Food App Henry!</h1>
         <NavLink to={'/home'}>
-            <button className={s.start}>START</button>
+            <button className={s.start}>Start</button>
         </NavLink>
 
         </div>
