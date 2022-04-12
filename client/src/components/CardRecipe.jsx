@@ -59,6 +59,7 @@ export default function CardRecipe(props){
     var urlExp = new RegExp(expression);
     let image = props.image === "" ? "https://cdn.pixabay.com/photo/2015/08/25/03/50/background-906135_1280.jpg" : props.image.match(urlExp)? props.image : "https://cdn.pixabay.com/photo/2015/08/25/03/50/background-906135_1280.jpg"; 
     const step = detectStep(props.steps);
+    console.log(props)
     return(
         <>
             <NavLink to={'/home'} style={{ textDecoration: 'none' }}><button className={s.buttonComeBack}>Back to home</button></NavLink>

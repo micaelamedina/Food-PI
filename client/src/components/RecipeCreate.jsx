@@ -183,14 +183,14 @@ export default function RecipeCreate() {
               </div>
               <div>
                 <label>Score</label>
-                <input className={errors.score?s.inputError:s.inputClass} type="number" placeholder="Recipe Score" name={"score"} value={input.score} onChange={(e)=>handleChangeInput(e)}/>
+                <input className={errors.score?s.inputError:s.inputClass} type="text" placeholder="Recipe Score" name={"score"} value={input.score} onChange={(e)=>handleChangeInput(e)}/>
                 {
                   errors.score && <p className={s.pErrorCreate}>{errors.score}</p>
                 } 
               </div>
               <div>
-                <label>Healthy food level</label>
-                <input className={errors.healthScore?s.inputError:s.inputClass} type="number" placeholder="Healthy food level of your recipe" name={"healthScore"} value={input.healthScore} onChange={e=>handleChangeInput(e)}/>
+                <label>Healthy food</label>
+                <input className={errors.healthScore?s.inputError:s.inputClass} type="text" placeholder="Healthy food level" name={"healthScore"} value={input.healthScore} onChange={e=>handleChangeInput(e)}/>
                 {
                   errors.healthScore && <p className={s.pErrorCreate}>{errors.healthScore}</p>
                 }
@@ -216,10 +216,11 @@ export default function RecipeCreate() {
                 </select>
               <div>
                 <ul className={s.delete}>
+                <p className={s.textDiet}>Chosen diets:</p>
                   {
                     input.diets.length >= 1 ? input.diets.map((d, i) => (
                       <div key={i}>
-                        <p className={s.textDiet}>Chosen diets:</p>
+                        
                       <button className={s.buttonDelete} value={d.toLowerCase()} onClick={(e)=>handleClikDelete(e)}>x</button>
                       <li className={s.delete}>{d[0].toUpperCase() + d.slice(1)}</li>
                       </div>

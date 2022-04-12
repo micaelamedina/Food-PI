@@ -104,10 +104,12 @@
     font-family: 'Bebas Neue', cursive;
     box-shadow: 2px 2px 10px black;
 }
+
 .inputClass:hover {
     background-color: rgb(201, 195, 195);
     color: black
 }
+
 .inputClass {
     background-color: rgb(201, 195, 195);
     color: black

@@ -12,15 +12,15 @@
     font-size: 18px
 };
 
-.imagenItem{
+.divImg{
     width: 350px;
     border-radius: 20px;
 }
-.divImg {
-    
+.imagenItem {
     display:block;
     margin:auto;
-    
+    border-radius: 20px;
+    width: 350px;
 }
 
 .diets {

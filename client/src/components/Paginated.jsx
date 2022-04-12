@@ -10,6 +10,7 @@ export default function Paginated({recipesPage, allRecipes, handleClickNumberPag
     if(numberPage.length > maxLimitNumberPage && parseInt(currentPage) !== Math.ceil(allRecipes.length / recipesPage)) {
         pageIncrement = <li onClick={handleNextPage}> &hellip; </li>
     };
+
     let pageDecrement = null;
     if(numberPage.length < maxLimitNumberPage && parseInt(currentPage) !== 1) {
         pageDecrement = <li onClick={handlePrevPage}> &hellip; </li>
@@ -28,7 +29,7 @@ export default function Paginated({recipesPage, allRecipes, handleClickNumberPag
                 allRecipes.length && <nav>
                 <ul className={s.numberPage}>
                     <li>
-                    <button className={s.buttonPrevNext} disabled={parseInt(currentPage) === 1 ? true : false} onClick={handlePrevPage}>{"<"}</button>
+                    <button className={s.buttonPrevNext} disabled={parseInt(currentPage) === 1 ? true : false} onClick={handlePrevPage}>{"<<"}</button>
                     </li>
                     {/* {pagePrev} */}
                     {pageDecrement}
@@ -47,12 +48,11 @@ export default function Paginated({recipesPage, allRecipes, handleClickNumberPag
                     {/* {pageNext} */}
                     <li>
                     <button className={s.buttonPrevNext} disabled={parseInt(currentPage) === Math.ceil(allRecipes.length / recipesPage) ? true : false}
-                    onClick={handleNextPage}>{">"}</button>
+                    onClick={handleNextPage}>{">>"}</button>
                     </li>
                 </ul>
             </nav>
             }
-            
         </div>
-    )
+    );
 };

@@ -76,4 +76,8 @@
     border: none;
     cursor: pointer;
 }
+
+.buttonPrevNext:hover{
+    color: black
+}
 /* //agregar list image */

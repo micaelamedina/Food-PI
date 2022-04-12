@@ -106,8 +106,7 @@ export default function rootReducer(state=initialState, action) {
                 return {
                     ...state,
                     currentPage: action.payload
-                }
-
+                };
             default: return {...state};
         };
 };
