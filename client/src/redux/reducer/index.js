@@ -1,11 +1,12 @@
-import { CREATE_RECIPE, GET_ALL_RECIPES, GET_DETAILS, GET_RECIPES_BY_DIET, GET_RECIPE_BY_NAME, GET_RECIPE_DIET, GET_TYPE_DIETS, GET_ORDER_SCORE, GET_ORDER_NAME } from "../actions"
+import { SET_CURRENT_PAGE, CREATE_RECIPE, GET_ALL_RECIPES, GET_DETAILS, GET_RECIPES_BY_DIET, GET_RECIPE_BY_NAME, GET_RECIPE_DIET, GET_TYPE_DIETS, GET_ORDER_SCORE, GET_ORDER_NAME } from "../actions"
 
 const initialState = {
     recipes: [],
     diets: [],
     details: {},
     recipeFilter: [],
-    order: ''
+    order: '',
+    currentPage: 1
 };
 
 
@@ -44,12 +45,14 @@ export default function rootReducer(state=initialState, action) {
                     details: action.payload
                 };
             case GET_RECIPE_DIET:
+                const allRecipes = state.recipes;
                 const allRecipesDiet = state.recipeFilter.length >= 1 ? state.recipeFilter : state.recipes;
-                const dietFilter = action.payload === 'all diets' ? allRecipesDiet : allRecipesDiet.filter(r=>r.diets.includes(action.payload));
+                const dietFilter = action.payload === 'all diets' ? allRecipes : allRecipesDiet.filter(r=>r.diets.includes(action.payload));
                 return {
                     ...state,
                     recipeFilter: dietFilter,
-                    order: action.payload
+                    order: action.payload,
+                    currentPage: 1
                 };
             case GET_ORDER_SCORE:
                 const allRecipesScore = state.recipeFilter.length >= 1 ? state.recipeFilter : state.recipes;
@@ -99,6 +102,12 @@ export default function rootReducer(state=initialState, action) {
                     recipeFilter: orderName,
                     order: action.payload
                 };
+            case SET_CURRENT_PAGE:
+                return {
+                    ...state,
+                    currentPage: action.payload
+                }
+
             default: return {...state};
         };
 };

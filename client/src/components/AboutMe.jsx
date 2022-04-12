@@ -8,9 +8,9 @@ export default function AboutMe() {
 
             <h3>Ir a</h3>
             <ul>
-                    <li><NavLink to={'/'}>Inicio</NavLink></li>
-                    <li><NavLink to={'/home'}>Home</NavLink></li>
-                    <li><NavLink to={'/recipes/create'}>Create Recipe</NavLink></li>
+                    <li><NavLink to={'/'} style={{ textDecoration: 'none' }}>Inicio</NavLink></li>
+                    <li><NavLink to={'/home'} style={{ textDecoration: 'none' }}>Home</NavLink></li>
+                    <li><NavLink to={'/recipes/create'} style={{ textDecoration: 'none' }}>Create Recipe</NavLink></li>
             </ul>
         </>
     )

@@ -1,30 +1,79 @@
-.numberPage {
-    list-style: none;
+/* .numberPage {
+    
     display: flex;
-}
-
-.numberPage li {
-    padding: 10px;
-    border: 1px solid black;
-    cursor: pointer;
-}
-
-.numberPage li.active {
-    background-color: black;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 15px;
     color: white;
-}
+} */
 
-.numberPage li button {
+/* .numberPage li {
+    padding: 10px;
+    border: 1px solid white;
+    cursor: pointer;
+} */
+
+/* .numberPage li.active {
+    background-color:rgb(242, 159, 5);
+    color: black;
+} */
+
+/* .numberPage li button {
     background-color: transparent;
     border: none;
-    color: black;
+    color: white;
     font-size: 15px;
     text-align: center;
     cursor: pointer;
 }
 
 .numberPage li button:hover {
-    background-color: white;
-    color: black
+    color: white
+} */
+
+
+.numberPage {
+    list-style: none;
+    display: flex;
+    font-family: 'Bebas Neue', cursive;
+    font-size: 20px;
+    color:  rgb(242, 159, 5);
+}
+
+.numberPage li.active {
+    background-color:rgb(242, 159, 5);
+    color: black;
+}
+.numberPage li{
+    height: 25px;
+    padding: 5px 10px 5px 10px;
+    font-size: 20px;
+    text-align: center;
+    border-radius: 10px;
+    color:  rgb(242, 159, 5);
+    background-color: rgb(0, 0, 0, 0.8);
+    font-family: 'Bebas Neue', cursive;
+    border: 1px solid white;
+    margin: 10px;
+    cursor: pointer;
+    box-shadow: 2px 2px 10px rgb(242, 159, 5);
+}
+
+.numberPage li:hover {
+    color: black;
+    background-color: rgb(242, 159, 5);
+    border: 2px solid black;
+    box-shadow: 2px 2px 10px rgb(242, 159, 5);
+}
+.buttonPrevNext {
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    text-align: center;
+    border-radius: 10px;
+    color:  rgb(242, 159, 5);
+    background-color: transparent;
+    font-family: 'Bebas Neue', cursive;
+    border: none;
+    cursor: pointer;
 }
 /* //agregar list image */

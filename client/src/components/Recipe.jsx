@@ -25,20 +25,23 @@ export function Recipe({id, name, diets, image}){
     return(
         <>
             <div className={s.divGeneral}>
-            <NavLink to={`/recipe/${id}`}><h3 className={s.name} >Name: {name}</h3></NavLink>
-            <img src={image} alt="Img Recipe" />
-            <h5 className={s.diets}>Diets:</h5>
-            <ul>
+            <h3 className={s.nameStyle} >{name}</h3>
+            <div className={s.divImg}>
+            <img className={s.imagenItem} src={image} alt="Img Recipe" />
+            </div>
+            
+            <h3 className={s.diets}>Diets:</h3>
+            <ul className={s.ulRecipe}>
             {
                 dietFilter?dietFilter.map(e=>{
                     return(
-                        <li className={s.li} key={Math.random(id)}>{e}</li>
+                        <li className={s.liRecipe} key={Math.random(id)}>{e}</li>
                     )
                 }):dietFilter.length?<p>Loading recipes...</p>:<p>This recipe does not belong to a specific diet.</p>
             }
             </ul>
+            <NavLink to={`/recipe/${id}`} style={{ textDecoration: 'none' }}><button className={s.buttonShow}>Show More Details</button></NavLink>
             </div>
-            
         </>
     )
 }

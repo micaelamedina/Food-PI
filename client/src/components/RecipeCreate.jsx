@@ -3,6 +3,7 @@ import {useDispatch, useSelector } from 'react-redux'
 import { NavLink, useNavigate} from "react-router-dom";
 import { createRecipe, getAllTypeDiets } from "../redux/actions";
 import NavBar from "./NavBar";
+import s from "./styles/RecipeCreate.module.css";
 
 //Pone la primer letra de mi array de dietas en mayúscula.
 const dietsToUpperCase = (dietsArray) => {
@@ -33,7 +34,7 @@ const inputValidate = (input) => {
 } if(input.score > 100 ) {
   errors.score = `The maximum score admitted is one hundred (100)`;
 } if(input.score <= 1) {
-  errors.score = `The minimum score of the recipe must be greater than or equal to one`;
+  errors.score = `The minimum score of the recipe must be greater than or equal to one (1)`;
 } if(!input.healthScore || input.healthScore === "") {
   errors.healthScore = `The health score of the recipe is required`
 } if(isNaN(Number(input.healthScore))) {
@@ -102,7 +103,7 @@ export default function RecipeCreate() {
       event.preventDefault();
       setErrors(inputValidate({
         ...input,
-       diets: event.target.value
+       diets: [...input.diets, event.target.value]
       }));
       setInput({
         ...input,
@@ -127,8 +128,7 @@ export default function RecipeCreate() {
         navigate('/home');
       } else {
         alert("Hay errores en el formulario")
-      }
-      
+      };
   };
 
   const handleClikDelete = (event) => {
@@ -144,59 +144,62 @@ export default function RecipeCreate() {
   };
 
   return (
-    <div>
-        <div>
-            <NavLink to={'/home'}><button>Go to Home</button></NavLink>
-        </div>
+    <div >
         <div>
             <NavBar/>
         </div>
-          <h3>Create New Recipe</h3>
-          <p>You can then create a new recipe.</p>
-          <p>To do this you must complete the following form.</p>
-          <br />
+        <div className={s.divBk}>
         <div>
-            <form onSubmit={(e)=>handleSubmit(e)}>
+            <NavLink to={'/home'} style={{ textDecoration: 'none' }}><button className={s.buttonCreate}>Back to Home</button></NavLink>
+        </div>
+        <div className={s.divCreate}>
+          <div className={s.divTextCreate}>
+          <h3 className={s.h3Create}>Create New Recipe</h3>
+          <p>To create a new recipe you must complete the form below</p>
+          </div>
+  
+        <div className={s.divForm}>
+            <form  onSubmit={(e)=>handleSubmit(e)}>
               <div>
                 <label>Name</label>
-                <input type="text" placeholder="Recipe Name" name={"name"} value={input.name} onChange={(e)=>handleChangeInput(e)}/>
+                <input className={errors.name?s.inputError:s.inputClass}  type="text" placeholder="Recipe Name" name={"name"} value={input.name} onChange={(e)=>handleChangeInput(e)}/>
                 {
-                  errors.name && <p>{errors.name}</p>
+                  errors.name && <p className={s.pErrorCreate}>{errors.name}</p>
                 }              
               </div>
               <div>
                 <label>Summary</label>
-                <input type="text" placeholder="Recipe summary" name={"summary"} value={input.summary} onChange={(e)=>handleChangeInput(e)}/>
+                <input className={errors.summary?s.inputError:s.inputClass}  type="text" placeholder="Recipe summary" name={"summary"} value={input.summary} onChange={(e)=>handleChangeInput(e)}/>
                 {
-                  errors.summary && <p>{errors.summary}</p>
+                  errors.summary && <p className={s.pErrorCreate}>{errors.summary}</p>
                 } 
               </div>
               <div>
                 <label>Image</label>
-                <input type="text" placeholder="Recipe image" name={"image"} value={input.image} onChange={(e)=>handleChangeInput(e)}/>
+                <input className={errors.image?s.inputError:s.inputClass} type="text" placeholder="Recipe image" name={"image"} value={input.image} onChange={(e)=>handleChangeInput(e)}/>
                 {
-                  errors.image && <p>{errors.image}</p>
+                  errors.image && <p className={s.pErrorCreate}>{errors.image}</p>
                 } 
               </div>
               <div>
                 <label>Score</label>
-                <input type="number" placeholder="Recipe Score" name={"score"} value={input.score} onChange={(e)=>handleChangeInput(e)}/>
+                <input className={errors.score?s.inputError:s.inputClass} type="number" placeholder="Recipe Score" name={"score"} value={input.score} onChange={(e)=>handleChangeInput(e)}/>
                 {
-                  errors.score && <p>{errors.score}</p>
+                  errors.score && <p className={s.pErrorCreate}>{errors.score}</p>
                 } 
               </div>
               <div>
                 <label>Healthy food level</label>
-                <input type="number" placeholder="Healthy food level of your recipe" name={"healthScore"} value={input.healthScore} onChange={e=>handleChangeInput(e)}/>
+                <input className={errors.healthScore?s.inputError:s.inputClass} type="number" placeholder="Healthy food level of your recipe" name={"healthScore"} value={input.healthScore} onChange={e=>handleChangeInput(e)}/>
                 {
-                  errors.healthScore && <p>{errors.healthScore}</p>
+                  errors.healthScore && <p className={s.pErrorCreate}>{errors.healthScore}</p>
                 }
               </div>
               <div>
                 <label>Steps</label>
-                <input type="text" placeholder="Steps" name={"steps"} value={input.steps} onChange={e=>handleChangeInput(e)}/>
+                <input className={errors.steps?s.inputError:s.inputClass} type="text" placeholder="Steps" name={"steps"} value={input.steps} onChange={e=>handleChangeInput(e)}/>
                 {
-                  errors.steps && <p>{errors.steps}</p>
+                  errors.steps && <p className={s.pErrorCreate}>{errors.steps}</p>
                 }
               </div>
               <div>
@@ -212,29 +215,32 @@ export default function RecipeCreate() {
                   }
                 </select>
               <div>
-                <ul>
+                <ul className={s.delete}>
                   {
                     input.diets.length >= 1 ? input.diets.map((d, i) => (
                       <div key={i}>
-                      <li>{d[0].toUpperCase() + d.slice(1)}</li>
-                      <button value={d.toLowerCase()} onClick={(e)=>handleClikDelete(e)}>x</button>
+                        <p className={s.textDiet}>Chosen diets:</p>
+                      <button className={s.buttonDelete} value={d.toLowerCase()} onClick={(e)=>handleClikDelete(e)}>x</button>
+                      <li className={s.delete}>{d[0].toUpperCase() + d.slice(1)}</li>
                       </div>
-                    )) : <p>You can select one or more types of diets</p>
+                    )) : errors.diets ? <p className={s.pErrorCreate}>You can select one or more types of diets</p> : null
                   }
                 </ul>
               </div>
               </div>
               <br/>
               <div>
-                <button type="submit" disabled={bool}>Add Recipe</button>
+                <button className={s.buttonCreate} type="submit" disabled={bool}>Add Recipe</button>
                 {
-                  bool && <p>Please complete the form</p>
+                  bool && <p className={s.pErrorCreate}>Please complete the form</p>
                 }
               </div>
               <div>
-                <button type="submit">Reset Form</button>
+                <button className={s.buttonCreate} type="submit">Reset Form</button>
               </div>
             </form>
+        </div>
+        </div>
         </div>
   </div>
   )

@@ -1,0 +1,144 @@
+.cardDiv {
+    background-image: url("./img/bkDetail.jpg");
+    background-position: center;
+    background-size: cover;
+}
+
+.divContCard {
+    width: 100%;
+    height: 100%;
+    border: 1px solid gray;
+    border-radius: 10px;
+    background-color: rgba(241, 235, 223, 0.9);
+    box-shadow: 5px 4px 10px white;
+    display: grid;
+    justify-content: center;
+    grid-row: auto;
+    text-align: center;   
+    font-family: 'Bebas Neue', cursive;
+    font-size: 20px;
+    width: 50%;
+    padding: 0;
+    margin: 20px;
+}
+.renderCard {
+    padding: 20px;
+}
+.buttonComeBack {
+    padding: 50px;
+    text-decoration:none;
+    height: 40px;
+    padding: 5px 10px 35px 10px;
+    font-size: 25px;
+    text-align: center;
+    border-radius: 10px;
+    color:  rgb(242, 159, 5);
+    background-color: rgb(0, 0, 0, 0.8);
+    font-family: 'Bebas Neue', cursive;
+    cursor: pointer;
+    box-shadow: 2px 2px 10px rgb(242, 159, 5);
+    display: flex;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.buttonComeBack:hover {
+    color: black;
+    background-color: rgb(242, 159, 5);
+    border: 2px solid black;
+    box-shadow: 2px 2px 10px rgb(242, 159, 5);
+}
+
+.img {
+    width: 400px;
+    border: none;
+    border-radius: 20px;
+    display:block;
+    margin:auto;
+}
+
+.errorDetail {
+    background-color: black;
+    width: 100%;
+    height: 100%;
+    color: black;
+    font-family: 'Bebas Neue', cursive;
+    align-content: center;
+    padding-top: 190px;
+}
+
+.h3ErrDetail {
+    background-color: rgb(242, 159, 5);
+    width: 400px;
+    border-radius: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 5px 5px 10px black;
+    padding: 0.5%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+    font-size: 45px;
+}
+
+.ulDetail {
+    list-style: none;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    position:relative;
+    text-decoration: none;
+    font-family: 'Bebas Neue', cursive;
+    padding: 0;
+    margin: 0;
+}
+
+
+.liDetail {
+    border: none;
+    border-radius: 20px;
+    background-color: #F20505;
+    color:white;
+    margin: 5px;
+    padding: 10px;
+    box-shadow: 5px 5px 10px black;
+}
+
+.liDetail:hover {
+    color: black;
+    background-color: rgb(242, 159, 5);
+}
+
+.h3Detail {
+    text-shadow: 5px 5px 10px rgb(242, 159, 5);
+    font-size: 40px;
+    margin: 1px;
+    padding: 10px;
+    
+}
+
+.pDetail {
+    width: 50px;
+    margin: 1px;
+    padding: 10px;
+    font-size: 30px;
+    border: none;
+    border-radius: 20px;
+    background-color: #F20505;
+    color:white;
+    margin-left: auto;
+    margin-right: auto;
+    box-shadow: 5px 5px 10px black;
+}
+
+.pDetail:hover {
+    color: black;
+    background-color: rgb(242, 159, 5);
+}
+
+.divScores {
+    display: flex;
+    justify-content: space-around;
+
+}

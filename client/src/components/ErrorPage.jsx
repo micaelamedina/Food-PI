@@ -8,10 +8,10 @@ export default function ErrorPage() {
             <div>
                 <h4>Quizás querias ir a...</h4>
                 <ul>
-                    <li><NavLink to={'/'}>Inicio</NavLink></li>
-                    <li><NavLink to={'/home'}>Home</NavLink></li>
-                    <li><NavLink to={'/about'}>About Me</NavLink></li>
-                    <li><NavLink to={'/recipe/create'}>Create Recipe</NavLink></li>
+                    <li><NavLink to={'/'} style={{ textDecoration: 'none' }}>Inicio</NavLink></li>
+                    <li><NavLink to={'/home'} style={{ textDecoration: 'none' }}>Home</NavLink></li>
+                    <li><NavLink to={'/about'} style={{ textDecoration: 'none' }}>About Me</NavLink></li>
+                    <li><NavLink to={'/recipe/create'} style={{ textDecoration: 'none' }}>Create Recipe</NavLink></li>
                 </ul>
             </div>
         </>

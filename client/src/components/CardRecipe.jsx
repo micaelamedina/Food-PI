@@ -1,4 +1,6 @@
 import React from "react";
+import s from "./styles/RecipeDetail.module.css";
+import { NavLink } from "react-router-dom";
 
 function detectDiet(diets) {
     if(diets.length){
@@ -56,28 +58,42 @@ export default function CardRecipe(props){
     let expression = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi
     var urlExp = new RegExp(expression);
     let image = props.image === "" ? "https://cdn.pixabay.com/photo/2015/08/25/03/50/background-906135_1280.jpg" : props.image.match(urlExp)? props.image : "https://cdn.pixabay.com/photo/2015/08/25/03/50/background-906135_1280.jpg"; 
-    console.log(image)
     const step = detectStep(props.steps);
     return(
         <>
-            <h3>Name: {props.name}</h3>
-            <h5>Diets:</h5>
-            <ul>
+            <NavLink to={'/home'} style={{ textDecoration: 'none' }}><button className={s.buttonComeBack}>Back to home</button></NavLink>
+            <div className={s.divContCard}>
+            <div>
+            <h3 className={s.h3Detail}>{props.name}</h3>
+            <div>
+            <img className={s.img} src={image} alt="Img Recipe" />
+            </div>
+            <h3 className={s.h3Detail}>Diets</h3>
+            <ul className={s.ulDetail}>
             {
                 dietas.length?dietas.map((e,i)=>{
                     return(
-                        <li key={i}>{e}</li>
+                        <li className={s.liDetail} key={i}>{e}</li>
                     )
                 }):'This recipe does not belong to a specific diet.'
             }
             </ul>
-            <img src={image} alt="Img Recipe" />
-            <h5>Score: {props.score}</h5>
-            <h5>Health Score: {props.healthScore}</h5>
-            <h5>Summary:</h5>
+            <div className={s.divScores}>
+                <div>
+                <h3 className={s.h3Detail}>Score</h3>
+            <p className={s.pDetail}>{props.score}</p>
+                </div>
+            <div>
+            <h3 className={s.h3Detail}>Health Score</h3>
+            <p className={s.pDetail}>{props.healthScore}%</p>
+            </div>
+            
+            </div>
+            
+            <h3 className={s.h3Detail}>Summary</h3>
             <span>{props.summary}</span>
             <div>
-                <h5>Steps:</h5>
+                <h3 className={s.h3Detail}>Steps</h3>
                 <ol>
                 {
                     Array.isArray(step)?step.length?step.map((s,i)=>{
@@ -88,7 +104,10 @@ export default function CardRecipe(props){
                 }
                 </ol>
             </div>
+            </div>
+            </div>
         </>
+        
     )
 }
 //para dejar una imagen por default:

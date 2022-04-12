@@ -4,7 +4,8 @@ import { getDetails } from "../redux/actions";
 import { useParams } from "react-router-dom";
 import CardRecipe from './CardRecipe';
 import NavBar from "./NavBar";
-import { NavLink } from "react-router-dom";
+//import { NavLink } from "react-router-dom";
+import s from "./styles/RecipeDetail.module.css";
 
 //diets api: es un array [vegan, ketogenic]
 //diets db: array de objetos. [{name: vegan}, {name: ketogenic}]
@@ -18,17 +19,16 @@ export default function RecipeDetail() {
     }, [dispatch, idRecipe]);
 
     const recipe = useSelector((state) => state.details);
+    
     return(
         <>
             <div>
                   <NavBar/>
             </div>
-            <div>
-                <NavLink to={'/home'}><button>Go to home</button></NavLink>
-            </div>
+            <div className={s.cardDiv}>
             {
                 recipe.name ? 
-                        <div>
+                        <div className={s.renderCard}>
                             <CardRecipe 
                             name={recipe.name}
                             image={recipe.image}
@@ -40,8 +40,9 @@ export default function RecipeDetail() {
                             key={recipe.id}
                             />
                         </div>
-                     : <h3>Loading recipe...</h3>
+                     :<div className={s.errorDetail}> <h3 className={s.h3ErrDetail}>Loading recipe...</h3></div> 
             }
+            </div>
         </>
     );
 };

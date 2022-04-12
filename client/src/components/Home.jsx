@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import {useSelector, useDispatch }from 'react-redux';
 import NavBar from "./NavBar";
-import { getAllRecipes, getRecipesByDiet, orderByScore, orderByName, getAllTypeDiets } from "../redux/actions";
+import { getAllRecipes, getRecipesByDiet, orderByScore, orderByName, getAllTypeDiets, setCurrentPage } from "../redux/actions";
 import { Recipe } from "./Recipe";
 import Paginated from "./Paginated";
 import { NavLink } from "react-router-dom";
+import s from "./styles/Home.module.css";
 
 const dietsToUpperCase = (dietsArray) => {
     let newArrayDiets = dietsArray.map(d=> {
@@ -19,8 +20,9 @@ export default function Home(props) {
     const recipeFilter = useSelector((state)=>state.recipeFilter);
     const allDiets = useSelector((state) => state.diets);
     const dietsUpper = dietsToUpperCase(allDiets);
-    const order = useSelector((state)=>state.order)
-    const [currentPage, setCurrentPage] = useState(1); //me guarda la pagina actual.
+    const order = useSelector((state)=>state.order);
+    const currentPage = useSelector((state) => state.currentPage);
+   // const [currentPage, setCurrentPage] = useState(1); //me guarda la pagina actual.
     const [recipesPage] = useState(9); //me guarda la cantidad de recetas por pagina. //ver que no rompa no declarar setRecipesPage, lo saque por el warning.
     const lastRecipe = currentPage * recipesPage; //indice de la ultima receta.
     const firstRecipe = lastRecipe - recipesPage; //indice de la primer receta.
@@ -30,23 +32,24 @@ export default function Home(props) {
     const [minLimitNumberPage, setminLimitNumberPage] = useState(0); //numero minimo de pagina. (la primera)
 
     const handleClickNumberPage = (event) => {
-        setCurrentPage(event.target.id);
+        dispatch(setCurrentPage(event.target.id));
        // setRecipesPage(9) //ver que esto no rompa nada. es para que no este todo el tiempo haciendo el warning
     };
     const handleNextPage = () => {
-        setCurrentPage(currentPage + 1);
+        dispatch(setCurrentPage(currentPage + 1))
         if(currentPage + 1 > maxLimitNumberPage) {
             setmaxLimitNumberPage(maxLimitNumberPage + limitNumberPage);
             setminLimitNumberPage(minLimitNumberPage + limitNumberPage);
         };
     };
     const handlePrevPage = () => {
-        setCurrentPage(currentPage -1)
+        dispatch(setCurrentPage(currentPage - 1))
         if(parseInt((currentPage - 1) % limitNumberPage) === 0) {
             setmaxLimitNumberPage(maxLimitNumberPage - limitNumberPage);
             setminLimitNumberPage(minLimitNumberPage - limitNumberPage);
-        }
+        };
     };
+    
     useEffect(()=>{
         dispatch(getAllRecipes());
     },[dispatch]);
@@ -55,35 +58,44 @@ export default function Home(props) {
         dispatch(getAllTypeDiets())
     },[dispatch]);
 
-    const handleEventClick = (event) => {
-        event.preventDefault();
-        dispatch(getAllRecipes());
-    };
-
     function handleChangeDiet(event){
         event.preventDefault();
-        dispatch(getRecipesByDiet(event.target.value));
+        if(event.target.value !== 'select') {
+            dispatch(getRecipesByDiet(event.target.value));
+            dispatch(setCurrentPage(1));
+        };
     };
+
     function handleChangeScore(event){
         event.preventDefault();
         if(event.target.value !== 'order') {
+            dispatch(setCurrentPage(1));
             dispatch(orderByScore(event.target.value));
         };
+    };
+
+    const handleEventClick = (event) => {
+        event.preventDefault();
+        dispatch(getAllRecipes());
+        dispatch(setCurrentPage(1));
     };
     function handleChangeName(event){
         event.preventDefault();
         if(event.target.value !== 'order') {
+            dispatch(setCurrentPage(1));
             dispatch(orderByName(event.target.value));
         };
     };
+    
     return(
-        <div>
+        <>
+            <div className={s.principalDiv}>
             <div>
+            <div className={s.navBar}>
                 <NavBar/>
             </div>
-            <div>
-                <button onClick={e=>handleEventClick(e)}>Reload</button>
-            </div>
+            <div className={s.divCont}>
+            <div className={s.filterBar}>
             <select onClick={e=>handleChangeName(e)}>
                 <option value='order'>Order by Name</option>
                 <option value='nameAsc'>Ascendente</option>
@@ -95,31 +107,22 @@ export default function Home(props) {
                 <option value='scoreDesc'>Score Descendente</option>
             </select>
             <select onChange={e=>handleChangeDiet(e)}>
-                <option>Select Type Diet</option>
+                <option value='select'>Select Diet Type</option>
                 <option value='all diets'>All Diets</option>
                 {
                      dietsUpper?dietsUpper.map((d, i)=>(
                         <option name={d.toLowerCase()}key={i} value={d.toLowerCase()}>
                           {d}
                         </option>
-                      )):''
+                      )): null
                 }
-                
-                {/* <option value='paleolithic'>Paleolithic</option>
-                <option value='dairy free'>Dairy free</option>
-                <option value='lacto ovo vegetarian'>Lacto ovo vegetarian</option>
-                <option value='vegan'>Vegan</option>
-                <option value='gluten free'>Gluten free</option>
-                <option value='primal'>Primal</option>
-                <option value='pescatarian'>Pescatarian</option>
-                <option value='fodmap friendly'>Fodmap friendly</option>
-                <option value='whole 30'>Whole 30</option>
-                <option value='ketogenic'>Ketogenic</option>
-                <option value='vegetarian'>Vegetarian</option>
-                <option value='lacto vegetarian'>Lacto Vegetarian</option>
-                <option value='ovo vegetarian'>Ovo Vegetarian</option> */}
             </select>
+            <div >
+                <button className={s.buttonReset} onClick={e=>handleEventClick(e)}>RESET</button>
+            </div>
+            </div>
             <br/>
+            <div className={s.paginatedBar}>
             <Paginated recipesPage={recipesPage} allRecipes={order === ''?allRecipes:recipeFilter} 
             handleClickNumberPage={handleClickNumberPage}
             currentPage={currentPage}
@@ -128,28 +131,35 @@ export default function Home(props) {
             handleNextPage={handleNextPage}
             handlePrevPage={handlePrevPage}
             />
-
+            </div>
+            </div>
+            </div>
             <br/>
-            {<div>
+            
+            {<div className={recipesCurrent.length ? s.divCardContainer : s.divError}>
                     {recipesCurrent.length?recipesCurrent.map((recipe) => {
                         return (
-                            <div key={recipe.id}>
+                            <div key={recipe.id} className={s.divCard}>
                             <Recipe 
                             name={recipe.name}
                             diets={recipe.diets.map(r=>r)}
-                            image={recipe.image !== "" ? recipe.image : "./styles/img/defaultImage.jpg"}
+                            image={recipe.image !== "" ? recipe.image : "https://cdn.pixabay.com/photo/2015/08/25/03/50/background-906135_1280.jpg"}
                             id={recipe.id}
                             key={recipe.id}
                             />
                             </div>)
                     }
-                    ):  <div>
-                        <h3>Oops! there are no recipes for that filter</h3>
-                        <p>Try filtering again</p>
-                        <p>Want to create your own recipe?</p>
-                        <p><NavLink to={'/recipes/create'}>Click Here!</NavLink></p>
+                    ):  <div className={s.divError}>
+                        <h3  className={s.textError}>Oops! there are no recipes for that filter</h3>
+                        <p className={s.textError}>Want to create your own recipe?</p>
+                        <div className={s.divButtonError}>
+                        <NavLink to={'/recipes/create'}><button className={s.buttonReset}>Click Here!</button></NavLink>
+                        </div>
+                        
                         </div>}
             </div>}
-        </div>
+            
+            </div>
+        </>
     )
 }

@@ -9,7 +9,8 @@ export const GET_RECIPE_BY_NAME = 'GET_RECIPE_BY_NAME';
 export const GET_DETAILS = 'GET_DETAILS';
 export const GET_RECIPE_DIET = 'GET_RECIPE_DIET';
 export const GET_ORDER_SCORE = 'GET_ORDER_SCORE';
-export const GET_ORDER_NAME = 'GET_ORDER_NAME'
+export const GET_ORDER_NAME = 'GET_ORDER_NAME';
+export const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 
 // export function getAllRecipes() {
 //     return function(dispatch) {
@@ -75,6 +76,13 @@ export const getDetails = (idRecipe) => {
 //         .then(rta => {dispatch({type: GET_DETAILS, payload: rta})})
 //     };
 
+/*
+export const getDetails = (idRecipe) => dispatch => {
+    const recipeDetail = axios.get(`http://localhost:3001/recipes/${idRecipe}`)
+        .then(r => {dispatch({type: GET_DETAILS, payload: r.data})})
+}
+*/
+
 export const orderByScore = (order) => {
     return {
         type: GET_ORDER_SCORE,
@@ -86,6 +94,13 @@ export const orderByName = (order) => {
     return {
         type: GET_ORDER_NAME,
         payload: order
+    };
+};
+
+export const setCurrentPage = (currentPage) => {
+    return {
+        type: SET_CURRENT_PAGE,
+        payload: currentPage
     };
 };
 

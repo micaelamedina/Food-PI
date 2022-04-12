@@ -7,23 +7,32 @@ export default function Paginated({recipesPage, allRecipes, handleClickNumberPag
             numberPage.push(i);
     };
     let pageIncrement = null;
-    if(numberPage.length > maxLimitNumberPage) {
+    if(numberPage.length > maxLimitNumberPage && parseInt(currentPage) !== Math.ceil(allRecipes.length / recipesPage)) {
         pageIncrement = <li onClick={handleNextPage}> &hellip; </li>
     };
     let pageDecrement = null;
-    if(numberPage.length < maxLimitNumberPage) {
+    if(numberPage.length < maxLimitNumberPage && parseInt(currentPage) !== 1) {
         pageDecrement = <li onClick={handlePrevPage}> &hellip; </li>
     };
+    // let pageNext = null;
+    // if(numberPage.length < maxLimitNumberPage && parseInt(currentPage) !== Math.ceil(allRecipes.length / recipesPage)) {
+    //     pageNext = <li onClick={handleNextPage}>{">"}</li>
+    // };
+    // let pagePrev = null;
+    // if(numberPage.length < maxLimitNumberPage && parseInt(currentPage) !== 1) {
+    //     pagePrev = <li onClick={handlePrevPage}>{"<"}</li>
+    // };
     return(
         <div>
-            <nav>
+            {
+                allRecipes.length && <nav>
                 <ul className={s.numberPage}>
                     <li>
-                    <button disabled={currentPage === 1 ? true : false} onClick={handlePrevPage}>{"<"}</button>
+                    <button className={s.buttonPrevNext} disabled={parseInt(currentPage) === 1 ? true : false} onClick={handlePrevPage}>{"<"}</button>
                     </li>
+                    {/* {pagePrev} */}
                     {pageDecrement}
                     {
-                        
                             numberPage?numberPage.map((n,i) => {
                                 if(n < maxLimitNumberPage+1 && n > minLimitNumberPage) {
                                 return <li className={parseInt(currentPage) === parseInt(n) ? s.active : null}
@@ -35,12 +44,15 @@ export default function Paginated({recipesPage, allRecipes, handleClickNumberPag
                             :<p>Loading...</p>
                     }
                     {pageIncrement}
+                    {/* {pageNext} */}
                     <li>
-                    <button disabled={currentPage === Math.ceil(allRecipes.length / recipesPage) ? true : false}
+                    <button className={s.buttonPrevNext} disabled={parseInt(currentPage) === Math.ceil(allRecipes.length / recipesPage) ? true : false}
                     onClick={handleNextPage}>{">"}</button>
                     </li>
                 </ul>
             </nav>
+            }
+            
         </div>
     )
 };

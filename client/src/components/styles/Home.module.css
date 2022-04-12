@@ -1,0 +1,114 @@
+.principalDiv {
+    width: 100%;
+    height: 100%;
+    background-color: black;
+    margin: 0;
+}
+
+.divCont {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction:row;
+    justify-content: space-around;
+    align-content: center;
+    align-items: center;
+    margin: 0;
+}
+
+.divCardContainer{
+    width: 100%;
+    height: 100%;
+    display: grid;
+    gap: 1rem;
+    grid-auto-rows: 33.33%;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 25rem), 1fr));
+};
+
+
+.navBar {
+margin: 20px;
+border: 2px solid black;
+background-color: black;
+
+}
+
+.buttonReset {
+    height: 25px;
+    padding: 5px 10px 28px 10px;
+    font-size: 20px;
+    text-align: center;
+    border-radius: 10px;
+    color:  rgb(242, 159, 5);
+    background-color: rgb(0, 0, 0, 0.8);
+    font-family: 'Bebas Neue', cursive;
+    margin: 10px;
+    cursor: pointer;
+    box-shadow: 2px 2px 10px rgb(242, 159, 5);
+}
+.buttonReset:hover {
+    color: black;
+    background-color: rgb(242, 159, 5);
+    border: 2px solid black;
+    box-shadow: 2px 2px 10px rgb(242, 159, 5);
+}
+.divCard {
+    margin: 0;
+    padding: 10px;
+    border: none;
+    border-radius: 20px;
+}
+.divCard:hover {
+    background-color: rgba(28, 23, 6, 0.5);
+    box-shadow: 2px 4px 10px 4px rgb(240, 240, 240, 0.5);
+    font-size: 25px;
+    text-shadow: 2px 4px 10px  rgb(242, 159, 5);
+}
+
+.filterBar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Bebas Neue', cursive;
+    color: #fff;
+    font-size: 30px;
+}
+
+select {
+    color:  rgb(242, 159, 5);
+    background-color: rgb(0, 0, 0, 0.8);
+    font-family: 'Bebas Neue', cursive;
+    font-size: 20px;
+    cursor: pointer;
+}
+select:hover {
+    background-color:rgb(242, 159, 5);
+    color: black;
+}
+option {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 15px;
+}
+.divError {
+    width: 100%;
+    height: 100%;
+    display:inline;
+    
+    justify-content:flex-end;
+
+}
+.textError {
+    text-align: center;
+    font-size: 40px;
+    color: white;
+    text-shadow: 2px 4px 9px  rgb(242, 159, 5);
+    font-family: 'Bebas Neue', cursive;
+}
+
+.divButtonError {
+    display: flex;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
