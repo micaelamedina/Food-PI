@@ -108,6 +108,15 @@ export default function rootReducer(state=initialState, action) {
                     ...state,
                     currentPage: action.payload
                 };
+            case "GET_CREATED":
+                let recipesFinal = action.payload === 'creadas' ? state.recipes.filter(r=> r.createdByBd) : state.recipes.filter(r=> !r.createdByBd);
+                console.log(recipesFinal)
+                return {
+                    ...state,
+                    recipeFilter: recipesFinal,
+                    order: action.payload,
+                    currentPage: 1
+                };
             default: return {...state};
         };
 };

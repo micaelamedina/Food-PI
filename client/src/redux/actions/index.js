@@ -82,3 +82,10 @@ export const setCurrentPage = (currentPage) => {
         payload: currentPage
     };
 };
+
+export const createdBy = (created) => {
+    return {
+        type: "GET_CREATED",
+        payload: created
+    }
+}

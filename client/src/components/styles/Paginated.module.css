@@ -1,36 +1,3 @@
-/* .numberPage {
-    
-    display: flex;
-    font-family: 'Bebas Neue', cursive;
-    font-size: 15px;
-    color: white;
-} */
-
-/* .numberPage li {
-    padding: 10px;
-    border: 1px solid white;
-    cursor: pointer;
-} */
-
-/* .numberPage li.active {
-    background-color:rgb(242, 159, 5);
-    color: black;
-} */
-
-/* .numberPage li button {
-    background-color: transparent;
-    border: none;
-    color: white;
-    font-size: 15px;
-    text-align: center;
-    cursor: pointer;
-}
-
-.numberPage li button:hover {
-    color: white
-} */
-
-
 .numberPage {
     list-style: none;
     display: flex;
@@ -80,4 +47,3 @@
 .buttonPrevNext:hover{
     color: black
 }
-/* //agregar list image */

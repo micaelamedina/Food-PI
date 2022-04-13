@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {useSelector, useDispatch }from 'react-redux';
 import NavBar from "./NavBar";
-import { getAllRecipes, getRecipesByDiet, orderByScore, orderByName, getAllTypeDiets, setCurrentPage } from "../redux/actions";
+import { getAllRecipes, getRecipesByDiet, orderByScore, orderByName, getAllTypeDiets, setCurrentPage, createdBy } from "../redux/actions";
 import { Recipe } from "./Recipe";
 import Paginated from "./Paginated";
 import { NavLink } from "react-router-dom";
@@ -83,6 +83,11 @@ export default function Home(props) {
             dispatch(orderByName(event.target.value));
         };
     };
+
+    function handleChangeCreated(event) {
+        event.preventDefault();
+        dispatch(createdBy(event.target.value))
+    }
     
     return(
         <>
@@ -113,6 +118,11 @@ export default function Home(props) {
                         </option>
                       )): null
                 }
+            </select>
+            <select onChange={e=>handleChangeCreated(e)}>
+                <option value='order'>Order by Creation</option>
+                <option value='creadas'>Created</option>
+                <option value='existentes'>Existings</option>
             </select>
             <div >
                 <button className={s.buttonReset} onClick={e=>handleEventClick(e)}>RESET</button>

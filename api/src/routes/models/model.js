@@ -5,7 +5,7 @@ const {Recipe, Diet} = require('../../db');
 
 //Info de la api.
 const getAllAPI = async () => {
-        const dataApi = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true&apiKey=${API_KEY_6}&number=10`);
+        const dataApi = await axios.get(`https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true&apiKey=${API_KEY}&number=100`);
         const filterApi = await dataApi.data.results.map(api => {
             return {
                 id: api.id,
@@ -20,22 +20,6 @@ const getAllAPI = async () => {
         });
         return filterApi;  
 };
-
-// const getAllAPI = () => {
-//     return axios.get(`https://api.spoonacular.com/recipes/complexSearch?addRecipeInformation=true&apiKey=${API_KEY_6}&number=10`)
-//                 .then(r=>r.data.results.map(api => {
-//                     return {
-//                         id: api.id,
-//                         name: api.title,
-//                         summary: api.summary,
-//                         image: api.image,
-//                         score: api.spoonacularScore,
-//                         healthScore: api.healthScore,
-//                         steps: api.analyzedInstructions.map(e=>e), //analyzed es un array con una sola posicion, dentro tiene un objeto, donde una de sus propiedades es step, un array de pasos.
-//                         diets: api.diets.map(e=>e)
-//                     }
-//                 })).then(r=>r)
-// };
 
 //Info de la db.
 const getAllDb = async () => {
@@ -57,10 +41,6 @@ const getAll = async() => {
    const allData = dataAPI.concat(dataDb);
    return allData;
 };
-
-// const getAll = () => {
-//     return getAllAPI().then(r=>r.concat(getAllDb().then(rta => rta))).then(r=>r)
-// };
 
 //Busqueda de recetas por nombre.
 const getRecipeByName = async (name) => {
