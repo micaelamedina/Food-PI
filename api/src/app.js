@@ -7,7 +7,6 @@ const morgan = require('morgan');
 const recipes = require('./routes/recipes');
 const types = require('./routes/types');
 const recipe = require('./routes/recipe');
-const diet = require('./routes/diet');
 require('./db.js');
 
 server.name = 'API';
@@ -29,7 +28,6 @@ server.use(express.json());
 server.use('/recipes', recipes);
 server.use('/types', types);
 server.use('/recipe', recipe);
-server.use('/diet', diet);
 
 // Error catching endware.
 server.use((err, req, res, next) => { // eslint-disable-line no-unused-vars

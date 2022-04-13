@@ -42,24 +42,13 @@ function dietsToUpperCase(dietas) {
 
 //steps --> [{name: '', steps: [{step: 1},{step: 1}]}]
 
-// function validateUrl(props) {
-//     let expression = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi
-//     var urlExp = new RegExp(expression);
-//     if(!props.image.match(urlExp)) {
-//         props.image = "https://cdn.pixabay.com/photo/2015/08/25/03/50/background-906135_1280.jpg"
-//         return;
-//     } else {
-//         return;
-//     };  
-// }
 export default function CardRecipe(props){
     let dietas = detectDiet(props.diets);
     dietas.length?dietas = dietsToUpperCase(dietas): dietas = [];
     let expression = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi
     var urlExp = new RegExp(expression);
-    let image = props.image === "" ? "https://cdn.pixabay.com/photo/2015/08/25/03/50/background-906135_1280.jpg" : props.image.match(urlExp)? props.image : "https://cdn.pixabay.com/photo/2015/08/25/03/50/background-906135_1280.jpg"; 
+    let image = urlExp.test(props.image.toString()) === false || props.image === "" ? "https://cdn.pixabay.com/photo/2015/08/25/03/50/background-906135_1280.jpg" : props.image; 
     const step = detectStep(props.steps);
-    console.log(props)
     return(
         <>
             <NavLink to={'/home'} style={{ textDecoration: 'none' }}><button className={s.buttonComeBack}>Back to home</button></NavLink>
@@ -109,8 +98,5 @@ export default function CardRecipe(props){
             </div>
         </>
         
-    )
-}
-//para dejar una imagen por default:
-// props.image !== '' ? props.image : 'url'>
-// o props.image ? props.image : 'url'
+    );
+};

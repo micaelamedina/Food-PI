@@ -6,12 +6,6 @@ module.exports = sequelize => {
       name: {
         type: DataTypes.STRING,
       },
-      // id: {
-      //   type: DataTypes.UUID,
-      //   allowNull: false,
-      //   primaryKey: true,
-      //   defaultValue: DataTypes.UUIDV4
-      // },
     },
     {timestamps: false});
   };

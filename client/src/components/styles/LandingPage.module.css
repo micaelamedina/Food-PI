@@ -3,18 +3,10 @@
     src: url('./foodpacker/Foodpacker.otf');
 }
 
-/*
-#F29F05 -> naranja claro.
-#F28705 -> naranja intermedio
-#A6695B -> marron
-#F20505 -> rojo terracota
-#A60303 -> bordo
-c30e0e
-*/
 .divContainer {
     width: 100%;
     height: 100vh;
-    background-image: url('./img/italian-cuisine-2378729_1920.jpg');
+    background-image: url('./img/bkLanding.jpg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
@@ -23,27 +15,6 @@ c30e0e
     grid-auto-rows: 50%;
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 25rem), 1fr));
 }
-
-/* .start {
-    display: flex;
-    position: absolute;
-    padding: 30px 25px 25px 20px;
-    border: #e42222 solid 1.5px 0.9;
-    border-radius: 15px;
-    background-color: rgba(233, 204, 17, 0.5);;
-    color: #494444;
-    font-size: 60px;
-    cursor:pointer;
-    height: 0%;
-    width: 12%;
-    left: 43%;
-    top: 28%;
-    box-shadow: 2px 4px 10px rgb(233, 205, 198, 0.9);
-    align-items: center;
-    justify-content: center;
-    
-    font-family: 'Bebas Neue', cursive;
-} */
 
 .start {
     display: flex;
@@ -74,14 +45,7 @@ c30e0e
     border: 2px solid black;
     box-shadow: 2px 2px 10px black;
 }
-/* //font-family: 'Chicle', cursive;
 
-
-boton:
-font-family: 'Contrail One', cursive;
-font-family: 'Skranji', cursive; 
-titulo:
-font-family: 'Oregano', cursive;*/
 .title{
     display: flex;
     position: absolute;

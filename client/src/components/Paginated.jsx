@@ -6,6 +6,7 @@ export default function Paginated({recipesPage, allRecipes, handleClickNumberPag
     for (let i = 1; i <= Math.ceil(allRecipes.length / recipesPage); i++) {
             numberPage.push(i);
     };
+
     let pageIncrement = null;
     if(numberPage.length > maxLimitNumberPage && parseInt(currentPage) !== Math.ceil(allRecipes.length / recipesPage)) {
         pageIncrement = <li onClick={handleNextPage}> &hellip; </li>
@@ -15,14 +16,7 @@ export default function Paginated({recipesPage, allRecipes, handleClickNumberPag
     if(numberPage.length < maxLimitNumberPage && parseInt(currentPage) !== 1) {
         pageDecrement = <li onClick={handlePrevPage}> &hellip; </li>
     };
-    // let pageNext = null;
-    // if(numberPage.length < maxLimitNumberPage && parseInt(currentPage) !== Math.ceil(allRecipes.length / recipesPage)) {
-    //     pageNext = <li onClick={handleNextPage}>{">"}</li>
-    // };
-    // let pagePrev = null;
-    // if(numberPage.length < maxLimitNumberPage && parseInt(currentPage) !== 1) {
-    //     pagePrev = <li onClick={handlePrevPage}>{"<"}</li>
-    // };
+
     return(
         <div>
             {
@@ -31,7 +25,6 @@ export default function Paginated({recipesPage, allRecipes, handleClickNumberPag
                     <li>
                     <button className={s.buttonPrevNext} disabled={parseInt(currentPage) === 1 ? true : false} onClick={handlePrevPage}>{"<<"}</button>
                     </li>
-                    {/* {pagePrev} */}
                     {pageDecrement}
                     {
                             numberPage?numberPage.map((n,i) => {
@@ -45,7 +38,6 @@ export default function Paginated({recipesPage, allRecipes, handleClickNumberPag
                             :<p>Loading...</p>
                     }
                     {pageIncrement}
-                    {/* {pageNext} */}
                     <li>
                     <button className={s.buttonPrevNext} disabled={parseInt(currentPage) === Math.ceil(allRecipes.length / recipesPage) ? true : false}
                     onClick={handleNextPage}>{">>"}</button>

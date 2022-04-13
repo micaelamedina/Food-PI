@@ -16,18 +16,22 @@ const detectDiet = function(diets) {
 const dietsToUpperCase = (dietsArray) => {
     let newArrayDiets = dietsArray.map(d=> {
         return d[0].toUpperCase() + d.slice(1);
-    })
+    });
     return newArrayDiets;
-}
+};
+
 export function Recipe({id, name, diets, image}){
     var dietFilter = detectDiet(diets);
     dietFilter = dietsToUpperCase(dietFilter);
+    let expression = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi
+    var urlExp = new RegExp(expression);
+    let imageFilter = urlExp.test(image.toString()) === false || image === "" ? "https://cdn.pixabay.com/photo/2015/08/25/03/50/background-906135_1280.jpg" : image;
     return(
         <>
             <div className={s.divGeneral}>
             <h3 className={s.nameStyle} >{name}</h3>
             <div className={s.divImg}>
-            <img className={s.imagenItem} src={image} alt="Img Recipe" />
+            <img className={s.imagenItem} src={imageFilter} alt="Img Recipe" />
             </div>
             
             <h3 className={s.diets}>Diets:</h3>
@@ -43,6 +47,5 @@ export function Recipe({id, name, diets, image}){
             <NavLink to={`/recipe/${id}`} style={{ textDecoration: 'none' }}><button className={s.buttonShow}>Show More Details</button></NavLink>
             </div>
         </>
-    )
-}
-// image? image : 'url'
+    );
+};

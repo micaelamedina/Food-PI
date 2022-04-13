@@ -22,19 +22,18 @@ export default function Home(props) {
     const dietsUpper = dietsToUpperCase(allDiets);
     const order = useSelector((state)=>state.order);
     const currentPage = useSelector((state) => state.currentPage);
-   // const [currentPage, setCurrentPage] = useState(1); //me guarda la pagina actual.
-    const [recipesPage] = useState(9); //me guarda la cantidad de recetas por pagina. //ver que no rompa no declarar setRecipesPage, lo saque por el warning.
+    const [recipesPage] = useState(9); //me guarda la cantidad de recetas por pagina.
     const lastRecipe = currentPage * recipesPage; //indice de la ultima receta.
     const firstRecipe = lastRecipe - recipesPage; //indice de la primer receta.
     const recipesCurrent = order === '' ? allRecipes.slice(firstRecipe, lastRecipe) : recipeFilter.slice(firstRecipe, lastRecipe); //corto el array desde el indice de la primer receta hasta el indice de la ultima receta (no la incluye)
-    const [limitNumberPage] = useState(5); //limite de botones con numero de pag q quiero mostrar.
+    const [limitNumberPage] = useState(5); //limite de botones con numero de pag que quiero mostrar.
     const [maxLimitNumberPage, setmaxLimitNumberPage] = useState(5); //numero limite maximo de pagina.(la ultima) por ej si renderiza 5, la primera vez sera 5, la segunda vez sera 10 y asi sucesivamente.
     const [minLimitNumberPage, setminLimitNumberPage] = useState(0); //numero minimo de pagina. (la primera)
 
     const handleClickNumberPage = (event) => {
         dispatch(setCurrentPage(event.target.id));
-       // setRecipesPage(9) //ver que esto no rompa nada. es para que no este todo el tiempo haciendo el warning
     };
+
     const handleNextPage = () => {
         dispatch(setCurrentPage(currentPage + 1))
         if(currentPage + 1 > maxLimitNumberPage) {
@@ -42,6 +41,7 @@ export default function Home(props) {
             setminLimitNumberPage(minLimitNumberPage + limitNumberPage);
         };
     };
+
     const handlePrevPage = () => {
         dispatch(setCurrentPage(currentPage - 1))
         if(parseInt((currentPage - 1) % limitNumberPage) === 0) {
@@ -52,10 +52,7 @@ export default function Home(props) {
     
     useEffect(()=>{
         dispatch(getAllRecipes());
-    },[dispatch]);
-
-    useEffect(()=>{
-        dispatch(getAllTypeDiets())
+        dispatch(getAllTypeDiets());
     },[dispatch]);
 
     function handleChangeDiet(event){
@@ -161,5 +158,5 @@ export default function Home(props) {
             
             </div>
         </>
-    )
-}
+    );
+};

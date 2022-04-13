@@ -1,4 +1,4 @@
-import { SET_CURRENT_PAGE, CREATE_RECIPE, GET_ALL_RECIPES, GET_DETAILS, GET_RECIPES_BY_DIET, GET_RECIPE_BY_NAME, GET_RECIPE_DIET, GET_TYPE_DIETS, GET_ORDER_SCORE, GET_ORDER_NAME } from "../actions"
+import { SET_CURRENT_PAGE, CREATE_RECIPE, GET_ALL_RECIPES, GET_DETAILS, GET_RECIPE_BY_NAME, GET_RECIPE_DIET, GET_TYPE_DIETS, GET_ORDER_SCORE, GET_ORDER_NAME } from "../actions"
 
 const initialState = {
     recipes: [],
@@ -8,7 +8,6 @@ const initialState = {
     order: '',
     currentPage: 1
 };
-
 
 export default function rootReducer(state=initialState, action) {
         switch(action.type) {
@@ -21,11 +20,6 @@ export default function rootReducer(state=initialState, action) {
                     ...state,
                     recipes: action.payload,
                     order: ''
-                };
-            case GET_RECIPES_BY_DIET: 
-                return {
-                    ...state,
-                    recipesFilterByDiet: action.payload
                 };
             case GET_TYPE_DIETS:
                 return {
@@ -45,12 +39,19 @@ export default function rootReducer(state=initialState, action) {
                     details: action.payload
                 };
             case GET_RECIPE_DIET:
-                const allRecipes = state.recipes;
-                const allRecipesDiet = state.recipeFilter.length >= 1 ? state.recipeFilter : state.recipes;
-                const dietFilter = action.payload === 'all diets' ? allRecipes : allRecipesDiet.filter(r=>r.diets.includes(action.payload));
+                let allRecipes = state.recipes;            
+                for (let i = 0; i < allRecipes.length; i++) {
+                    let array = [];
+                   if(typeof allRecipes[i].diets[0] !== 'string') {
+                       array = allRecipes[i].diets.map(el=>el.name);
+                       console.log(array)
+                       allRecipes[i].diets = array;
+                   };
+                };
+                let dietFilter = allRecipes.filter(r=>r.diets.includes(action.payload));
                 return {
                     ...state,
-                    recipeFilter: dietFilter,
+                    recipeFilter: action.payload === 'all diets' ? allRecipes : dietFilter,
                     order: action.payload,
                     currentPage: 1
                 };

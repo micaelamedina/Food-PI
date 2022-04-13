@@ -3,7 +3,6 @@ import { NavLink } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import s from "./styles/NavBar.module.css";
 
-
 export default function NavBar() {
 
 

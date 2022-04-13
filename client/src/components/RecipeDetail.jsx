@@ -3,8 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { getDetails } from "../redux/actions";
 import { useParams } from "react-router-dom";
 import CardRecipe from './CardRecipe';
-import NavBar from "./NavBar";
-//import { NavLink } from "react-router-dom";
 import s from "./styles/RecipeDetail.module.css";
 
 //diets api: es un array [vegan, ketogenic]
@@ -22,9 +20,6 @@ export default function RecipeDetail() {
     
     return(
         <>
-            <div>
-                  <NavBar/>
-            </div>
             <div className={s.cardDiv}>
             {
                 recipe.name ? 

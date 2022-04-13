@@ -2,7 +2,6 @@ import React, {useEffect, useState} from "react";
 import {useDispatch, useSelector } from 'react-redux'
 import { NavLink, useNavigate} from "react-router-dom";
 import { createRecipe, getAllTypeDiets } from "../redux/actions";
-import NavBar from "./NavBar";
 import s from "./styles/RecipeCreate.module.css";
 
 //Pone la primer letra de mi array de dietas en mayúscula.
@@ -12,13 +11,7 @@ const dietsToUpperCase = (dietsArray) => {
   });
   return newArrayDiets;
 };
-// function isObjEmpty(obj) {
-//   if(Object.keys(obj).length === 0) {
-//     return true;
-//   } else {
-//     return false;
-//   }
-// };
+
 const inputValidate = (input) => {
   let errors = {};
   if(!isNaN(Number(input.name))) {
@@ -33,7 +26,7 @@ const inputValidate = (input) => {
   errors.score = `The recipe score only supports numbers`;
 } if(input.score > 100 ) {
   errors.score = `The maximum score admitted is one hundred (100)`;
-} if(input.score <= 1) {
+} if(input.score < 1) {
   errors.score = `The minimum score of the recipe must be greater than or equal to one (1)`;
 } if(!input.healthScore || input.healthScore === "") {
   errors.healthScore = `The health score of the recipe is required`
@@ -41,7 +34,7 @@ const inputValidate = (input) => {
   errors.healthScore = `The healthy score of the recipe only admits numbers`
 } if(input.healthScore > 100 ) {
   errors.healthScore = `The maximum score admitted is one hundred (100)`
-} if(input.healthScore <= 1) {
+} if(input.healthScore < 1) {
   errors.healthScore = `The recipe's minimum healthy score must be greater than or equal to one (1)`
 } if(input.step === "") {
   errors.step = `The steps of the recipe is required`
@@ -62,6 +55,7 @@ return errors;
 export default function RecipeCreate() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
   const diets = useSelector((state) => state.diets);
   let dietsUpper = dietsToUpperCase(diets);
   const [input, setInput] = useState({
@@ -75,6 +69,7 @@ export default function RecipeCreate() {
   });
   const [errors, setErrors] = useState({});
   const [bool, setBool] = useState(true);
+
   useEffect(() => {
     dispatch(getAllTypeDiets())
   }, [dispatch]);
@@ -145,9 +140,6 @@ export default function RecipeCreate() {
 
   return (
     <div >
-        <div>
-            <NavBar/>
-        </div>
         <div className={s.divBk}>
         <div>
             <NavLink to={'/home'} style={{ textDecoration: 'none' }}><button className={s.buttonCreate}>Back to Home</button></NavLink>
@@ -244,6 +236,5 @@ export default function RecipeCreate() {
         </div>
         </div>
   </div>
-  )
+  );
 };
-//d.name[0].toUpperCase() + d.name.slice(1);

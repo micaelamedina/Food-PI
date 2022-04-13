@@ -2,11 +2,6 @@ const {Router} = require('express');
 const router = Router();
 const {getRecipeByName, getRecipeById, getAll} = require('./models/model');
 
-// router.get('/', async (req, res) => {
-//     const {name} = req.query;
-//     const allDatos = await getRecipeByName(name);
-//     res.json(allDatos);
-// });
 router.get('/', async (req, res) => {
     try {
         const {name} = req.query;
