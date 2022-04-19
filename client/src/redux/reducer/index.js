@@ -1,4 +1,4 @@
-import { SET_CURRENT_PAGE, CREATE_RECIPE, GET_ALL_RECIPES, GET_DETAILS, GET_RECIPE_BY_NAME, GET_RECIPE_DIET, GET_TYPE_DIETS, GET_ORDER_SCORE, GET_ORDER_NAME } from "../actions"
+import { SET_CURRENT_PAGE, CREATE_RECIPE, GET_ALL_RECIPES, GET_DETAILS, GET_RECIPE_BY_NAME, GET_RECIPE_DIET, GET_TYPE_DIETS, GET_ORDER_SCORE, GET_ORDER_NAME, GET_CREATED, SET_DETAIL } from "../actions"
 
 const initialState = {
     recipes: [],
@@ -36,7 +36,8 @@ export default function rootReducer(state=initialState, action) {
             case GET_DETAILS: 
                 return {
                     ...state,
-                    details: action.payload
+                    details: action.payload,
+
                 };
             case GET_RECIPE_DIET:
                 let allRecipes = state.recipes;            
@@ -44,7 +45,6 @@ export default function rootReducer(state=initialState, action) {
                     let array = [];
                    if(typeof allRecipes[i].diets[0] !== 'string') {
                        array = allRecipes[i].diets.map(el=>el.name);
-                       console.log(array)
                        allRecipes[i].diets = array;
                    };
                 };
@@ -108,7 +108,7 @@ export default function rootReducer(state=initialState, action) {
                     ...state,
                     currentPage: action.payload
                 };
-            case "GET_CREATED":
+            case GET_CREATED:
                 let recipesFinal = action.payload === 'creadas' ? state.recipes.filter(r=> r.createdByBd) : state.recipes.filter(r=> !r.createdByBd);
                 console.log(recipesFinal)
                 return {
@@ -116,6 +116,11 @@ export default function rootReducer(state=initialState, action) {
                     recipeFilter: recipesFinal,
                     order: action.payload,
                     currentPage: 1
+                };
+            case SET_DETAIL:
+                return {
+                    ...state,
+                    details: action.payload
                 };
             default: return {...state};
         };

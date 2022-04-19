@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import {useSelector, useDispatch }from 'react-redux';
 import NavBar from "./NavBar";
-import { getAllRecipes, getRecipesByDiet, orderByScore, orderByName, getAllTypeDiets, setCurrentPage, createdBy } from "../redux/actions";
+import { getAllRecipes, getRecipesByDiet, orderByScore, orderByName, getAllTypeDiets, setCurrentPage, createdBy, setDetail } from "../redux/actions";
 import { Recipe } from "./Recipe";
 import Paginated from "./Paginated";
 import { NavLink } from "react-router-dom";
@@ -53,6 +53,8 @@ export default function Home(props) {
     useEffect(()=>{
         dispatch(getAllRecipes());
         dispatch(getAllTypeDiets());
+        dispatch(setCurrentPage(1));
+        dispatch(setDetail({}))
     },[dispatch]);
 
     function handleChangeDiet(event){
@@ -76,6 +78,7 @@ export default function Home(props) {
         dispatch(getAllRecipes());
         dispatch(setCurrentPage(1));
     };
+
     function handleChangeName(event){
         event.preventDefault();
         if(event.target.value !== 'order') {
@@ -86,8 +89,8 @@ export default function Home(props) {
 
     function handleChangeCreated(event) {
         event.preventDefault();
-        dispatch(createdBy(event.target.value))
-    }
+        dispatch(createdBy(event.target.value));
+    };
     
     return(
         <>
@@ -122,7 +125,7 @@ export default function Home(props) {
             <select onChange={e=>handleChangeCreated(e)}>
                 <option value='order'>Order by Creation</option>
                 <option value='creadas'>Created</option>
-                <option value='existentes'>Existings</option>
+                <option value='existentes'>Existing</option>
             </select>
             <div >
                 <button className={s.buttonReset} onClick={e=>handleEventClick(e)}>RESET</button>

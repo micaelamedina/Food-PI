@@ -11,6 +11,8 @@ export const GET_RECIPE_DIET = 'GET_RECIPE_DIET';
 export const GET_ORDER_SCORE = 'GET_ORDER_SCORE';
 export const GET_ORDER_NAME = 'GET_ORDER_NAME';
 export const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
+export const GET_CREATED = 'GET_CREATED';
+export const SET_DETAIL = 'SET_DETAIL';
 
 // export function getAllRecipes() {
 //     return function(dispatch) {
@@ -22,14 +24,14 @@ export const SET_CURRENT_PAGE = 'SET_CURRENT_PAGE';
 
 export function getAllRecipes() {
     return async function(dispatch) {
-        const allRecipes = await axios.get('http://localhost:3001/recipes');
+        const allRecipes = await axios.get('/recipes');
         return dispatch({type: GET_ALL_RECIPES, payload: allRecipes.data});
     };
 };
 
 export const createRecipe = (input) => {
     return async function(dispatch) {
-        const postRecipe = await axios.post('http://localhost:3001/recipe', input)
+        const postRecipe = await axios.post('/recipe', input)
         return postRecipe;
     };
 };
@@ -38,26 +40,26 @@ export const getRecipesByDiet = (diet) => {
     return {
         type: GET_RECIPE_DIET,
         payload: diet
-    }
-}
+    };
+};
 
 export const getAllTypeDiets = () => {
     return async function(dispatch) {
-        const allTypeDiets = await axios.get('http://localhost:3001/types');
+        const allTypeDiets = await axios.get('/types');
         return (dispatch({type: GET_TYPE_DIETS, payload: allTypeDiets.data}))
     };
 };
 
 export const getRecipeByName = (nameRecipe) => {
     return async function(dispatch) {
-        const recipeByName = await axios.get(`http://localhost:3001/recipes?name=${nameRecipe}`);
+        const recipeByName = await axios.get(`/recipes?name=${nameRecipe}`);
         return (dispatch({type: GET_RECIPE_BY_NAME, payload: recipeByName.data}))
     };
 };
 
 export const getDetails = (idRecipe) => {
     return async function(dispatch) {
-        const recipeDetail = await axios.get(`http://localhost:3001/recipes/${idRecipe}`);
+        const recipeDetail = await axios.get(`/recipes/${idRecipe}`);
         return(dispatch({type: GET_DETAILS, payload: recipeDetail.data}));
     };
 };
@@ -85,7 +87,14 @@ export const setCurrentPage = (currentPage) => {
 
 export const createdBy = (created) => {
     return {
-        type: "GET_CREATED",
+        type: GET_CREATED,
         payload: created
-    }
-}
+    };
+};
+
+export const setDetail = (obj = {}) => {
+    return {
+        type: SET_DETAIL,
+        payload: obj
+    };
+};

@@ -138,6 +138,12 @@ export default function RecipeCreate() {
     }));
   };
 
+  const handleReset = (event) =>{
+        event.preventDefault();
+        setInput({name: "", summary: "", image: "", score: "", healthScore: "", steps: "", diets: []});
+        setErrors({});
+    };
+
   return (
     <div >
         <div className={s.divBk}>
@@ -229,7 +235,7 @@ export default function RecipeCreate() {
                 }
               </div>
               <div>
-                <button className={s.buttonCreate} type="submit">Reset Form</button>
+                <button onClick={(e)=>handleReset(e)} className={s.buttonCreate} type="submit">Reset Form</button>
               </div>
             </form>
         </div>

@@ -13,6 +13,7 @@ export default function SearchBar() {
         event.preventDefault();
         setSearch(event.target.value);
     };
+    
     const handleSubmit = (event) => {
         event.preventDefault();
         dispatch(setCurrentPage(1));
