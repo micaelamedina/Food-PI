@@ -29,15 +29,15 @@ const inputValidate = (input) => {
 } if(input.score < 1) {
   errors.score = `The minimum score of the recipe must be greater than or equal to one (1)`;
 } if(!input.healthScore || input.healthScore === "") {
-  errors.healthScore = `The health score of the recipe is required`
+  errors.healthScore = `The health score of the recipe is required`;
 } if(isNaN(Number(input.healthScore))) {
-  errors.healthScore = `The healthy score of the recipe only admits numbers`
+  errors.healthScore = `The healthy score of the recipe only admits numbers`;
 } if(input.healthScore > 100 ) {
-  errors.healthScore = `The maximum score admitted is one hundred (100)`
+  errors.healthScore = `The maximum score admitted is one hundred (100)`;
 } if(input.healthScore < 1) {
-  errors.healthScore = `The recipe's minimum healthy score must be greater than or equal to one (1)`
+  errors.healthScore = `The recipe's minimum healthy score must be greater than or equal to one (1)`;
 } if(input.step === "") {
-  errors.step = `The steps of the recipe is required`
+  errors.step = `The steps of the recipe is required`;
 } if(input.summary === "") {
   errors.summary = 'The summary of the recipe is required';
 } if(input.summary.length < 20) {
@@ -45,9 +45,9 @@ const inputValidate = (input) => {
 } if(input.steps.length < 20) {
   errors.steps = 'The recipe steps must contain at least twenty (20) characters';
 } if(input.diets.length === 0) {
-  errors.diets = 'You must select at least one type of diet'
+  errors.diets = 'You must select at least one type of diet';
 } if(input.steps === "") {
-  errors.steps = 'The steps of the recipe is required'
+  errors.steps = 'The steps of the recipe is required';
 };
 return errors;
 };
