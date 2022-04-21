@@ -23,9 +23,13 @@ export default function SearchBar() {
     return(
         <>
             <header className={s.divCont}>
+                
                 <div className={s.divSearch}>
+                <form>
                 <input className={s.inputClass} value={search} name={search} type={"search"} autoComplete="off" placeholder="Insert Recipe Name" onChange={e=>handleChange(e)}/>
                 <button className={n.buttonNav}  onClick={e=>handleSubmit(e)}>Search</button>
+                </form>
+                
                 </div>
             </header>
         </>

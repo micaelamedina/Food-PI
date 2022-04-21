@@ -96,14 +96,16 @@ export default function RecipeCreate() {
 
   const handleChangeSelect = (event) => {
       event.preventDefault();
-      setErrors(inputValidate({
-        ...input,
-       diets: [...input.diets, event.target.value]
-      }));
-      setInput({
-        ...input,
-        diets: [...input.diets, event.target.value]
-      });
+      if(!input.diets.includes(event.target.value)) {
+        setErrors(inputValidate({
+          ...input,
+         diets: [...input.diets, event.target.value]
+        }));
+        setInput({
+          ...input,
+          diets: [...input.diets, event.target.value]
+        });
+      };      
   };
 
   const handleSubmit = (event) => {
@@ -160,44 +162,44 @@ export default function RecipeCreate() {
             <form  onSubmit={(e)=>handleSubmit(e)}>
               <div>
                 <label>Name</label>
-                <input className={errors.name?s.inputError:s.inputClass}  type="text" placeholder="Recipe Name" name={"name"} value={input.name} onChange={(e)=>handleChangeInput(e)}/>
+                <input className={errors.name && input.name !== ""?s.inputError:s.inputClass}  type="text" placeholder="Recipe Name" name={"name"} value={input.name} onChange={(e)=>handleChangeInput(e)}/>
                 {
-                  errors.name && <p className={s.pErrorCreate}>{errors.name}</p>
+                  errors.name && input.name !== "" && <p className={s.pErrorCreate}>{errors.name}</p>
                 }              
               </div>
               <div>
                 <label>Summary</label>
-                <input className={errors.summary?s.inputError:s.inputClass}  type="text" placeholder="Recipe summary" name={"summary"} value={input.summary} onChange={(e)=>handleChangeInput(e)}/>
+                <input className={errors.summary && input.summary !== ""?s.inputError:s.inputClass}  type="text" placeholder="Recipe summary" name={"summary"} value={input.summary} onChange={(e)=>handleChangeInput(e)}/>
                 {
-                  errors.summary && <p className={s.pErrorCreate}>{errors.summary}</p>
+                  errors.summary && input.summary !== "" && <p className={s.pErrorCreate}>{errors.summary}</p>
                 } 
               </div>
               <div>
                 <label>Image</label>
-                <input className={errors.image?s.inputError:s.inputClass} type="text" placeholder="Recipe image" name={"image"} value={input.image} onChange={(e)=>handleChangeInput(e)}/>
+                <input className={errors.image && input.image !== "" ?s.inputError:s.inputClass} type="text" placeholder="Recipe image" name={"image"} value={input.image} onChange={(e)=>handleChangeInput(e)}/>
                 {
-                  errors.image && <p className={s.pErrorCreate}>{errors.image}</p>
+                  errors.image && input.image !== "" && <p className={s.pErrorCreate}>{errors.image}</p>
                 } 
               </div>
               <div>
                 <label>Score</label>
-                <input className={errors.score?s.inputError:s.inputClass} type="text" placeholder="Recipe Score" name={"score"} value={input.score} onChange={(e)=>handleChangeInput(e)}/>
+                <input className={errors.score && input.score !== ""?s.inputError:s.inputClass} type="text" placeholder="Recipe Score" name={"score"} value={input.score} onChange={(e)=>handleChangeInput(e)}/>
                 {
-                  errors.score && <p className={s.pErrorCreate}>{errors.score}</p>
+                  errors.score && input.score !== "" && <p className={s.pErrorCreate}>{errors.score}</p>
                 } 
               </div>
               <div>
                 <label>Healthy food</label>
-                <input className={errors.healthScore?s.inputError:s.inputClass} type="text" placeholder="Healthy food level" name={"healthScore"} value={input.healthScore} onChange={e=>handleChangeInput(e)}/>
+                <input className={errors.healthScore && input.healthScore !== "" ?s.inputError:s.inputClass} type="text" placeholder="Healthy food level" name={"healthScore"} value={input.healthScore} onChange={e=>handleChangeInput(e)}/>
                 {
-                  errors.healthScore && <p className={s.pErrorCreate}>{errors.healthScore}</p>
+                  errors.healthScore && input.healthScore !== "" && <p className={s.pErrorCreate}>{errors.healthScore}</p>
                 }
               </div>
               <div>
                 <label>Steps</label>
-                <input className={errors.steps?s.inputError:s.inputClass} type="text" placeholder="Steps" name={"steps"} value={input.steps} onChange={e=>handleChangeInput(e)}/>
+                <input className={errors.steps && input.steps !== ""?s.inputError:s.inputClass} type="text" placeholder="Steps" name={"steps"} value={input.steps} onChange={e=>handleChangeInput(e)}/>
                 {
-                  errors.steps && <p className={s.pErrorCreate}>{errors.steps}</p>
+                  errors.steps && input.steps !== "" && <p className={s.pErrorCreate}>{errors.steps}</p>
                 }
               </div>
               <div>
@@ -222,7 +224,7 @@ export default function RecipeCreate() {
                       <button className={s.buttonDelete} value={d.toLowerCase()} onClick={(e)=>handleClikDelete(e)}>x</button>
                       <li className={s.delete}>{d[0].toUpperCase() + d.slice(1)}</li>
                       </div>
-                    )) : errors.diets ? <p className={s.pErrorCreate}>You can select one or more types of diets</p> : null
+                    )) : errors.diets && input.diets.length >= 1 ? <p className={s.pErrorCreate}>You can select one or more types of diets</p> : null
                   }
                 </ul>
               </div>
