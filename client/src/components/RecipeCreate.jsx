@@ -159,7 +159,7 @@ export default function RecipeCreate() {
           </div>
   
         <div className={s.divForm}>
-            <form  onSubmit={(e)=>handleSubmit(e)}>
+            <form  onSubmit={(e)=>handleSubmit(e)} className={s.form}>
               <div>
                 <label>Name</label>
                 <input className={errors.name && input.name !== ""?s.inputError:s.inputClass}  type="text" placeholder="Recipe Name" name={"name"} value={input.name} onChange={(e)=>handleChangeInput(e)}/>
