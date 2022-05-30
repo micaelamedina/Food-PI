@@ -1,4 +1,3 @@
-
 import s from './styles/Paginated.module.css';
 
 export default function Paginated({recipesPage, allRecipes, handleClickNumberPage, currentPage, maxLimitNumberPage, minLimitNumberPage, handleNextPage, handlePrevPage}) {

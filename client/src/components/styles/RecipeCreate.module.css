@@ -14,15 +14,14 @@
     border-radius: 10px;
     background-color: rgba(241, 235, 223, 0.9);
     box-shadow: 5px 4px 10px white;
-    display: grid;
+    display: flex;
     justify-content: center;
-    grid-row: auto;
+    flex-direction: column;
     text-align: center;   
     font-family: 'Bebas Neue', cursive;
     font-size: 20px;
     padding: 0;
     margin: 20px;
-    
 }
 .divForm {
     border: 1px solid black;

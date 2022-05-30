@@ -14,11 +14,11 @@
     margin-right: auto; 
     display: flex;
     justify-content: center;
-    align-content: center
+    align-content: center;
 };
 
 .buttonErrorPage:hover{
-    color: black
+    color: black;
 };
 
 .errorPage {
