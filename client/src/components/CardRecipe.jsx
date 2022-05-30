@@ -55,8 +55,8 @@ export default function CardRecipe(props){
             <div className={s.divContCard}>
             <div>
             <h3 className={s.h3Detail}>{props.name}</h3>
-            <div>
-            <img className={s.img} src={image} alt="Img Recipe" />
+            <div className={s.divImg}>
+            <img className={s.imgDetail} src={image} alt="Img Recipe" />
             </div>
             <h3 className={s.h3Detail}>Diets</h3>
             <ul className={s.ulDetail}>
