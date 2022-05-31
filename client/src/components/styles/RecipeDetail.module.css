@@ -52,6 +52,7 @@
 
 .imgDetail {
     width: 400px;
+    max-width: 400px;
     border: none;
     border-radius: 20px;
     display:block;
